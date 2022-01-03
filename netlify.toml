@@ -1,6 +1,0 @@
-[[redirects]]
-  from = "https://epic-goldstine-8b8c95.netlify.app/"
-  to = "https://epic-goldstine-8b8c95.netlify.app/11"
-  status = 200
-  force = true
-  conditions = {Role = ["admin"]}
