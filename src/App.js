@@ -28,7 +28,8 @@ function App() {
         <Navbar />
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route path="/scoreboard" element={<Scoreboard />} />
+          <Route path="/scoreboard" element={<Scoreboard role='none' />} />
+          <Route path="/scoreboard/admin" element={<Scoreboard role='admin'  />} />
         </Routes>
       </Router>
     </div>
