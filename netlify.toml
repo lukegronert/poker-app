@@ -1,11 +1,3 @@
 [[redirects]]
-    from = "/scoreboard/*"
-    status = 200
-    conditions = {Role = ["admin"]}
-    force = true
-
-[[redirects]]
-    from = "/scoreboard/*"
-    to = "/"
-    force = true
-    status = 302
+    from = "/schedule"
+    to = "www.google.com"
