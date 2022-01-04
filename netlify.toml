@@ -1,5 +1,5 @@
 [[redirects]]
-    from = "/schedule"
+    from = "/scoreboard"
     to = "https://www.google.com"
     status = 301
     force = false
