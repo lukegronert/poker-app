@@ -28,7 +28,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route path="/scoreboard" element={<Scoreboard />} />
+          <Route path="/scoreboard/view" element={<Scoreboard />} />
         </Routes>
       </Router>
     </div>
