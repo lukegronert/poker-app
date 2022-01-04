@@ -1,4 +1,8 @@
 import {useEffect} from 'react';
+import {BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
+import Scoreboard from './pages/Scoreboard';
+import Home from './pages/Home';
+import Navbar from './components/Navbar';
 
 // Import Netlify Identity script into HTML of site
 // Must be called from React life-cycle function
@@ -13,16 +17,6 @@ function initNetlifyIdentity() {
   document.body.appendChild(script);
 }
 
-function openNetlifyModal() {
-  const netlifyIdentity = window.netlifyIdentity;
-
-  if(netlifyIdentity) {
-    netlifyIdentity.open();
-  } else {
-    console.log('netlifyIdentity not defined')
-  }
-}
-
 function App() {
   useEffect(() => {
     initNetlifyIdentity();
@@ -30,8 +24,13 @@ function App() {
   
   return (
     <div className="App">
-      <h1>POKER STUFF</h1>
-      <button onClick={() => openNetlifyModal()}>Login/Sign Up</button>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route path="/scoreboard" element={<Scoreboard />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
