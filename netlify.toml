@@ -1,5 +1,5 @@
 [[redirects]]
     from = "/scoreboard"
-    to = "https://www.google.com"
+    to = "/scoreboard/admin"
     status = 301
     force = false
