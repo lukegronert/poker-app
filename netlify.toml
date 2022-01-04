@@ -1,5 +1,5 @@
 [[redirects]]
     from = "/scoreboard/*"
     status = 200
-    conditions = {Role = ["admin"]}
+    conditions = {Roles = ["admin"]}
     force = true
