@@ -6,7 +6,7 @@ export default function Navbar() {
         <nav>
             <ul>
                 <li><Link to="/">Home</Link></li>
-                <li><Link to="/scoreboard/view">Scoreboard</Link></li>
+                <li><Link to="/scoreboard">Scoreboard</Link></li>
             </ul>
 
         </nav>
