@@ -4,8 +4,6 @@ import App from './App';
 import netlifyIdentity from 'netlify-identity-widget'
 
 netlifyIdentity.init();
-const user = netlifyIdentity.currentUser();
-netlifyIdentity.on('login', user => console.log('login', user));
 
 
 ReactDOM.render(
