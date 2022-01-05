@@ -1,7 +1,8 @@
 import React from 'react';
-import netlifyIdentity from 'netlify-identity-widget'
+import netlifyIdentity from 'netlify-identity-widget';
+import {useEffect} from 'react';
 
-const user = netlifyIdentity.currentUser();
+let user = netlifyIdentity.currentUser();
 function openNetlifyModal() {
     const netlifyIdentity = window.netlifyIdentity;
   
@@ -13,6 +14,9 @@ function openNetlifyModal() {
   }
 
 export default function Home() {
+  useEffect(() => {
+    user = netlifyIdentity.currentUser();
+  })
     return (
         <div>
             <h1>POKER STUFF</h1>
