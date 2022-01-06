@@ -1,10 +1,11 @@
-import React from 'react'
+import React from 'react';
+import EntryForm from '../components/EntryForm';
 
-export default function Scoreboard({role}) {
+export default function Scoreboard() {
     return (
         <div>
             Scoreboard
-            {role}
+            <EntryForm />
         </div>
     )
 }

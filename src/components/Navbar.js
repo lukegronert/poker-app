@@ -9,7 +9,6 @@ export default function Navbar() {
                 <li><Link to="/scoreboard">Scoreboard</Link></li>
                 <li><Link to="/scoreboard/admin">AdminScoreboard</Link></li>
             </ul>
-
         </nav>
     )
 }
