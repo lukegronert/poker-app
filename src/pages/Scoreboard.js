@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import EntryForm from '../components/EntryForm';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 
@@ -6,7 +6,6 @@ const {REACT_APP_SHEET_ID} = process.env;
 const {REACT_APP_GOOGLE_CLIENT_EMAIL} = process.env;
 const {REACT_APP_GOOGLE_PRIVATE_KEY} = process.env;
 
-console.log(REACT_APP_GOOGLE_PRIVATE_KEY)
 const doc = new GoogleSpreadsheet(REACT_APP_SHEET_ID);
 
 (async function() {
@@ -18,17 +17,45 @@ const doc = new GoogleSpreadsheet(REACT_APP_SHEET_ID);
       });
 }())
 
-// (async function() {
-//     await doc.loadInfo();
-//     console.log(doc.title)
-// }())
-
 
 export default function Scoreboard() {
+    const [currentSheet, setCurrentSheet] = useState({});
+    const [currentRows, setCurrentRows] = useState([])
+
+    const loadSheet = async () => {
+        await doc.loadInfo()
+            .then((response) => {
+                setCurrentSheet(doc.sheetsByIndex[0]);
+            })
+    }
+
+    const addRow = async (pName, buyInAmount) => {
+        const sheet = doc.sheetsByIndex[0];
+        const newRow = await sheet.addRow({ playerName: pName, buyIn: buyInAmount });
+        setCurrentSheet(sheet)
+    }
+    const getRows = async () => {
+        const sheet = doc.sheetsByIndex[0];
+        const rows = await sheet.getRows()
+        setCurrentRows(rows)
+    }
+    useEffect(() => {
+        loadSheet()
+    }, [])
     return (
         <div>
             Scoreboard
-            <EntryForm />
+            <EntryForm addRow={addRow} />
+            {currentSheet.title}
+            {currentRows && currentRows.map((row) => {
+                return (
+                    <div key={currentRows.indexOf(row)}>
+                        <p>{row.playerName}</p>
+                        <p>{row.buyIn}</p>
+                    </div>
+                )
+            })}
+            <button onClick={() => getRows()}>Get Rows</button>
         </div>
     )
 }
