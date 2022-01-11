@@ -34,6 +34,7 @@ export default function Scoreboard() {
         const sheet = doc.sheetsByIndex[0];
         const newRow = await sheet.addRow({ playerName: pName, buyIn: buyInAmount });
         setCurrentSheet(sheet)
+        getRows();
     }
     const getRows = async () => {
         const sheet = doc.sheetsByIndex[0];
@@ -49,6 +50,7 @@ export default function Scoreboard() {
                 rows[i].buyIn = Number(rows[i].buyIn) + 20
                 console.log(rows[i].buyIn)
                 await rows[i].save()
+                getRows();
             }
         }
     }
@@ -58,7 +60,8 @@ export default function Scoreboard() {
         const rows = await sheet.getRows();
         for (let i = 0; i < rows.length; i++) {
             if(rows[i].playerName === playerName) {
-                rows[i].delete();
+                await rows[i].delete();
+                getRows();
             }
         }
     }
@@ -73,19 +76,23 @@ export default function Scoreboard() {
             <EntryForm addRow={addRow} />
             {currentSheet.title}
             <table>
-            <tr>
-                <th>Player Name</th>
-                <th>Total Buy Ins</th>
-                <th></th>
-                <th></th>  
-            </tr>
-                {currentRows && currentRows.map((row) => {
-                    return (
-                        <PlayerCard playerName={row.playerName} totalBuyIns={row.buyIn}
-                                    addRebuy={addRebuy} removePlayer={removePlayer}
-                                    key={currentRows.indexOf(row)} />
-                    )
-                })}
+                <thead>
+                    <tr>
+                        <th>Player Name</th>
+                        <th>Total Buy Ins</th>
+                        <th></th>
+                        <th></th>  
+                    </tr>
+                </thead>
+                <tbody>
+                    {currentRows && currentRows.map((row) => {
+                        return (
+                            <PlayerCard playerName={row.playerName} totalBuyIns={row.buyIn}
+                                        addRebuy={addRebuy} removePlayer={removePlayer}
+                                        key={currentRows.indexOf(row)} />
+                        )
+                    })}
+                </tbody>
             </table>
             <button onClick={() => getRows()}>Get Rows</button>
         </div>

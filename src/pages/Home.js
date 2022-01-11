@@ -19,7 +19,7 @@ export default function Home() {
   })
     return (
         <div>
-            <h1>POKER STUFF</h1>
+            <h1>Gronert's Horseshoe</h1>
             <button onClick={() => openNetlifyModal()}>Login/Sign Up</button>
             <button onClick={() => console.log(user)}>User</button>
             <button onClick={() => console.log(user.app_metadata.roles)}>Role</button>
