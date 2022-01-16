@@ -7,7 +7,6 @@ export default function Navbar() {
             <ul>
                 <li><Link to="/">Home</Link></li>
                 <li><Link to="/scoreboard">Scoreboard</Link></li>
-                <li><Link to="/scoreboard/admin">AdminScoreboard</Link></li>
             </ul>
         </nav>
     )

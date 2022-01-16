@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import EntryForm from '../components/EntryForm';
-import PlayerCard from '../components/PlayerCard';
+import PlayerCard from '../components/NewTournamentPlayerCard';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 
 const {REACT_APP_SHEET_ID} = process.env;

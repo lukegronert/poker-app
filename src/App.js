@@ -29,7 +29,6 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route path="/scoreboard" element={<Scoreboard />} />
-          <Route path="/scoreboard/admin" element={<Scoreboard  />} />
         </Routes>
       </Router>
     </div>
