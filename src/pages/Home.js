@@ -30,17 +30,17 @@ const doc = new GoogleSpreadsheet(REACT_APP_SHEET_ID);
 
 export default function Home() {
   const [playerRows, setPlayerRows] = useState([]);
-  const [sheet, setSheet] = useState({});
+  const [sheet, setSheet] = useState([]);
 
-  const loadSheet = async () => {
+  const loadSheet = async (getRows) => {
     await doc.loadInfo()
-        .then((response) => {
-            setSheet(doc.sheetsByIndex[0]);
-        })
-        .then(async () => {
-          const rows = await sheet.getRows()
-          setPlayerRows(rows)
-        })
+              .then(() => {
+                setSheet(doc.sheetsByIndex[0])
+              })
+              .then(async () => {
+                const rows = await doc.sheetsByIndex[0].getRows()
+                setPlayerRows(rows)
+              })
   }
 
   useEffect(() => {
