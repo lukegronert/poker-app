@@ -20,30 +20,31 @@ const doc = new GoogleSpreadsheet(REACT_APP_SHEET_ID);
 
 
 export default function Scoreboard() {
+    const [tournamentName, setTournamentName] = useState('');
     const [currentSheet, setCurrentSheet] = useState({});
-    const [currentRows, setCurrentRows] = useState([])
+    const [currentRows, setCurrentRows] = useState([]);
 
     const loadSheet = async () => {
         await doc.loadInfo()
-            .then((response) => {
-                setCurrentSheet(doc.sheetsByIndex[0]);
-            })
+    }
+
+    const createNewSheet = async (tournamentName) => {
+        const newSheet = await doc.addSheet({ title: `${tournamentName}`, headerValues: ['playerName', 'buyIn'] });
     }
 
     const addRow = async (pName, buyInAmount) => {
-        const sheet = doc.sheetsByIndex[0];
+        const sheet = doc.sheetsByTitle[tournamentName];
         const newRow = await sheet.addRow({ playerName: pName, buyIn: buyInAmount });
         setCurrentSheet(sheet)
         getRows();
     }
     const getRows = async () => {
-        const sheet = doc.sheetsByIndex[0];
-        const rows = await sheet.getRows()
+        const rows = await doc.sheetsByTitle[tournamentName].getRows()
         setCurrentRows(rows)
     }
 
     const addRebuy = async (playerName) => {
-        const sheet = doc.sheetsByIndex[0];
+        const sheet = doc.sheetsByTitle[tournamentName];
         const rows = await sheet.getRows();
         for (let i = 0; i < rows.length; i++) {
             if(rows[i].playerName === playerName) {
@@ -56,7 +57,7 @@ export default function Scoreboard() {
     }
     
     const removePlayer = async (playerName) => {
-        const sheet = doc.sheetsByIndex[0];
+        const sheet = doc.sheetsByTitle[tournamentName];
         const rows = await sheet.getRows();
         for (let i = 0; i < rows.length; i++) {
             if(rows[i].playerName === playerName) {
@@ -72,9 +73,9 @@ export default function Scoreboard() {
 
     return (
         <div>
-            Scoreboard
+            <input placeholder="MonthYear" onChange={(e) => setTournamentName(e.target.value)} />
+            <button onClick={() => createNewSheet(tournamentName)}>Create New Tourament</button>
             <EntryForm addRow={addRow} />
-            {currentSheet.title}
             <table>
                 <thead>
                     <tr>
