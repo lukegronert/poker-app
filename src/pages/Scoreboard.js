@@ -25,6 +25,12 @@ export default function Scoreboard() {
     const [currentSheet, setCurrentSheet] = useState({});
     const [currentRows, setCurrentRows] = useState([]);
     const [sheetNames, setSheetNames] = useState([]);
+    const [tournamentPlayers, setTournamentPlayers] = useState([]);
+    const [firstPlace, setFirstPlace] = useState('');
+    const [secondPlace, setSecondPlace] = useState('');
+    const [thirdPlace, setThirdPlace] = useState('');
+    const [highHand, setHighHand] = useState('');
+
 
     const loadSheet = async () => {
         await doc.loadInfo()
@@ -33,16 +39,16 @@ export default function Scoreboard() {
     // If newTournamentName is declared, create a new sheet in doc with newTournamentName as the title
     const createNewSheet = async (newTournamentName) => {
         if(newTournamentName !== '') {
-            const newSheet = await doc.addSheet({ title: `${newTournamentName}`, headerValues: ['playerName', 'buyIn'] });
+            const newSheet = await doc.addSheet({ title: `${newTournamentName}`, headerValues: ['playerName', 'buyIn', 'winnings'] });
             setTournamentName(newTournamentName)
         } else {
             console.log('No tournament name entered.')
         }
     }
     // Used when adding a player to the tournament, adds a row entry to the sheet with name and buyin amount
-    const addRow = async (pName, buyInAmount) => {
+    const addRow = async (pName, buyInAmount, winnings) => {
         const sheet = doc.sheetsByTitle[tournamentName];
-        const newRow = await sheet.addRow({ playerName: pName, buyIn: buyInAmount });
+        const newRow = await sheet.addRow({ playerName: pName, buyIn: buyInAmount, winnings: winnings });
         setCurrentSheet(sheet)
         getRows();
     }
@@ -50,6 +56,11 @@ export default function Scoreboard() {
     const getRows = async () => {
         const rows = await doc.sheetsByTitle[tournamentName].getRows()
         setCurrentRows(rows)
+        let tournamentPlayersArr = [];
+        currentRows.map((row) => {
+            tournamentPlayersArr.push(row.playerName)
+        })
+        setTournamentPlayers(tournamentPlayersArr)
     }
 
     const addRebuy = async (playerName) => {
@@ -87,7 +98,7 @@ export default function Scoreboard() {
         setSheetNames(sheetNameArr)
     }
     // Sets value selected in dropdown to tournamentName state
-    function handleSelectChange(event) {
+    function handleTournamentChange(event) {
             setTournamentName(event.target.value);
         }
 
@@ -105,7 +116,7 @@ export default function Scoreboard() {
         <div>
             <input placeholder="MonthYear" onChange={(e) => setNewTournamentName(e.target.value)} />
             <button onClick={() => createNewSheet(newTournamentName)}>Create New Tourament</button>
-            <select name="tournaments" id="tournament-selector" value={tournamentName} onChange={(handleSelectChange)}>
+            <select name="tournaments" value={tournamentName} onChange={(handleTournamentChange)}>
                 <option>--Select a Tournament--</option>
                 {sheetNames && sheetNames.map((sheet) => {
                     return (
@@ -120,6 +131,7 @@ export default function Scoreboard() {
                     <tr>
                         <th>Player Name</th>
                         <th>Total Buy Ins</th>
+                        <th>Winnings</th>
                         <th></th>
                         <th></th>  
                     </tr>
@@ -127,7 +139,7 @@ export default function Scoreboard() {
                 <tbody>
                     {currentRows && currentRows.map((row) => {
                         return (
-                            <PlayerCard playerName={row.playerName} totalBuyIns={row.buyIn}
+                            <PlayerCard playerName={row.playerName} totalBuyIns={row.buyIn} winnings={row.winnings}
                                         addRebuy={addRebuy} removePlayer={removePlayer}
                                         key={currentRows.indexOf(row)} />
                         )
@@ -135,6 +147,38 @@ export default function Scoreboard() {
                 </tbody>
             </table>
             <button onClick={() => getRows()}>Get Rows</button>
+            <select value={firstPlace} onChange={(e) => setFirstPlace(e.target.value)}>
+                <option>---Select Player---</option>
+                {currentRows && currentRows.map((row) => {
+                    return (
+                    <option value={row.playerName} key={row.playerName}>{row.playerName}</option>
+                    )
+                })}
+            </select>
+            <select value={secondPlace} onChange={(e) => setSecondPlace(e.target.value)}>
+            <option>---Select Player---</option>
+                {currentRows && currentRows.map((row) => {
+                    return (
+                    <option value={row.playerName} key={row.playerName}>{row.playerName}</option>
+                    )
+                })}
+            </select>
+            <select value={thirdPlace} onChange={(e) => setThirdPlace(e.target.value)}>
+            <option>---Select Player---</option>
+                {currentRows && currentRows.map((row) => {
+                    return (
+                    <option value={row.playerName} key={row.playerName}>{row.playerName}</option>
+                    )
+                })}
+            </select>
+            <select value={highHand} onChange={(e) => setHighHand(e.target.value)}>
+            <option>---Select Player---</option>
+                {currentRows && currentRows.map((row) => {
+                    return (
+                    <option value={row.playerName} key={row.playerName}>{row.playerName}</option>
+                    )
+                })}
+            </select>
         </div>
     )
 }

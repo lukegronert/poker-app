@@ -63,7 +63,7 @@ export default function Home() {
                 <tbody>
                     {playerRows && playerRows.map((row) => {
                         return (
-                            <PlayerCard playerName={row.playerName} totalBuyIns={row.buyIn}
+                            <PlayerCard playerName={row.playerName} totalBuyIns={row.buyIn} winnings={row.winnings}
                                         key={playerRows.indexOf(row)} />
                         )
                     })}
