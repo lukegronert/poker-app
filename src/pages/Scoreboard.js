@@ -20,6 +20,7 @@ const doc = new GoogleSpreadsheet(REACT_APP_SHEET_ID);
 
 
 export default function Scoreboard() {
+    const [newTournamentName, setNewTournamentName] = useState('');
     const [tournamentName, setTournamentName] = useState('');
     const [currentSheet, setCurrentSheet] = useState({});
     const [currentRows, setCurrentRows] = useState([]);
@@ -29,20 +30,23 @@ export default function Scoreboard() {
         await doc.loadInfo()
     }
 
-    const createNewSheet = async (tournamentName) => {
-        if(tournamentName !== '') {
-            const newSheet = await doc.addSheet({ title: `${tournamentName}`, headerValues: ['playerName', 'buyIn'] });
+    // If newTournamentName is declared, create a new sheet in doc with newTournamentName as the title
+    const createNewSheet = async (newTournamentName) => {
+        if(newTournamentName !== '') {
+            const newSheet = await doc.addSheet({ title: `${newTournamentName}`, headerValues: ['playerName', 'buyIn'] });
+            setTournamentName(newTournamentName)
         } else {
             console.log('No tournament name entered.')
         }
     }
-
+    // Used when adding a player to the tournament, adds a row entry to the sheet with name and buyin amount
     const addRow = async (pName, buyInAmount) => {
         const sheet = doc.sheetsByTitle[tournamentName];
         const newRow = await sheet.addRow({ playerName: pName, buyIn: buyInAmount });
         setCurrentSheet(sheet)
         getRows();
     }
+    //Retrieves rows from selected tournament sheet
     const getRows = async () => {
         const rows = await doc.sheetsByTitle[tournamentName].getRows()
         setCurrentRows(rows)
@@ -99,8 +103,8 @@ export default function Scoreboard() {
 
     return (
         <div>
-            <input placeholder="MonthYear" onChange={(e) => setTournamentName(e.target.value)} />
-            <button onClick={() => createNewSheet(tournamentName)}>Create New Tourament</button>
+            <input placeholder="MonthYear" onChange={(e) => setNewTournamentName(e.target.value)} />
+            <button onClick={() => createNewSheet(newTournamentName)}>Create New Tourament</button>
             <select name="tournaments" id="tournament-selector" value={tournamentName} onChange={(handleSelectChange)}>
                 <option>--Select a Tournament--</option>
                 {sheetNames && sheetNames.map((sheet) => {
@@ -110,6 +114,7 @@ export default function Scoreboard() {
                 })}
             </select>
             <EntryForm addRow={addRow} />
+            {tournamentName}
             <table>
                 <thead>
                     <tr>
