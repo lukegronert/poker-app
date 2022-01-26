@@ -31,6 +31,10 @@ export default function Scoreboard() {
     const [thirdPlace, setThirdPlace] = useState('');
     const [highHand, setHighHand] = useState('');
     const [totalPot, setTotalPot] = useState(0);
+    const [firstPlacePercentage, setFirstPlacePercentage] = useState(0);
+    const [secondPlacePercentage, setSecondPlacePercentage] = useState(0);
+    const [thirdPlacePercentage, setThirdPlacePercentage] = useState(0);
+    const [highHandPercentage, setHighHandPercentage] = useState(0);
 
 
     const loadSheet = async () => {
@@ -73,6 +77,7 @@ export default function Scoreboard() {
                 console.log(rows[i].buyIn)
                 await rows[i].save()
                 getRows();
+                getTotalPot();
             }
         }
     }
@@ -84,6 +89,7 @@ export default function Scoreboard() {
             if(rows[i].playerName === playerName) {
                 await rows[i].delete();
                 getRows();
+                getTotalPot();
             }
         }
     }
@@ -112,6 +118,38 @@ export default function Scoreboard() {
     function handleTournamentChange(event) {
             setTournamentName(event.target.value);
         }
+
+    const submitWinnings = async () => {
+        if(firstPlace, firstPlacePercentage, secondPlace, secondPlacePercentage, thirdPlace, thirdPlacePercentage, highHand, highHandPercentage) {
+            const sheet = doc.sheetsByTitle[tournamentName];
+            const rows = await sheet.getRows();
+            for (let i = 0; i < rows.length; i++) {
+                if(rows[i].playerName === firstPlace) {
+                    rows[i].winnings += Number((firstPlacePercentage / 100) * totalPot)
+                    await rows[i].save()
+                }
+            }
+            for (let i = 0; i < rows.length; i++) {
+                if(rows[i].playerName === secondPlace) {
+                    rows[i].winnings += Number((secondPlacePercentage / 100) * totalPot)
+                    await rows[i].save()
+                }
+            }
+            for (let i = 0; i < rows.length; i++) {
+                if(rows[i].playerName === thirdPlace) {
+                    rows[i].winnings += Number((thirdPlacePercentage/ 100) * totalPot)
+                    await rows[i].save()
+                }
+            }
+            for (let i = 0; i < rows.length; i++) {
+                if(rows[i].playerName === highHand) {
+                    rows[i].winnings += Number((highHandPercentage / 100) * totalPot)
+                    await rows[i].save()
+                }
+            }
+            getRows()
+        }
+    }
 
     // Loads the doc and filled sheetNames with all names of sheets in the doc
     useEffect(() => {
@@ -163,38 +201,55 @@ export default function Scoreboard() {
             </table>
             <button onClick={() => getRows()}>Get Rows</button>
             <p>Total Pot = {totalPot}</p>
-            <select value={firstPlace} onChange={(e) => setFirstPlace(e.target.value)}>
-                <option>--Select Player--</option>
-                {currentRows && currentRows.map((row) => {
-                    return (
-                    <option value={row.playerName} key={row.playerName}>{row.playerName}</option>
-                    )
-                })}
-            </select>
-            <select value={secondPlace} onChange={(e) => setSecondPlace(e.target.value)}>
-                <option>---Select Player---</option>
+            <div>
+                <label>Percentage</label>
+                <input placeholder="Ex: 20" onChange={(e) => setFirstPlacePercentage(e.target.value)} />
+                <select value={firstPlace} onChange={(e) => setFirstPlace(e.target.value)}>
+                    <option>--Select Player--</option>
                     {currentRows && currentRows.map((row) => {
                         return (
                         <option value={row.playerName} key={row.playerName}>{row.playerName}</option>
                         )
                     })}
-            </select>
-            <select value={thirdPlace} onChange={(e) => setThirdPlace(e.target.value)}>
-                <option>---Select Player---</option>
-                    {currentRows && currentRows.map((row) => {
-                        return (
-                        <option value={row.playerName} key={row.playerName}>{row.playerName}</option>
-                        )
-                    })}
-            </select>
-            <select value={highHand} onChange={(e) => setHighHand(e.target.value)}>
-                <option>---Select Player---</option>
-                    {currentRows && currentRows.map((row) => {
-                        return (
-                        <option value={row.playerName} key={row.playerName}>{row.playerName}</option>
-                        )
-                    })}
-            </select>
+                </select>
+            </div>
+            <div>
+                <label>Percentage</label>
+                <input placeholder="Ex: 20" onChange={(e) => setSecondPlacePercentage(e.target.value)} />
+                <select value={secondPlace} onChange={(e) => setSecondPlace(e.target.value)}>
+                    <option>--Select Player--</option>
+                        {currentRows && currentRows.map((row) => {
+                            return (
+                            <option value={row.playerName} key={row.playerName}>{row.playerName}</option>
+                            )
+                        })}
+                </select>
+            </div>
+            <div>
+                <label>Percentage</label>
+                <input placeholder="Ex: 20" onChange={(e) => setThirdPlacePercentage(e.target.value)} />
+                <select value={thirdPlace} onChange={(e) => setThirdPlace(e.target.value)}>
+                    <option>--Select Player--</option>
+                        {currentRows && currentRows.map((row) => {
+                            return (
+                            <option value={row.playerName} key={row.playerName}>{row.playerName}</option>
+                            )
+                        })}
+                </select>
+            </div>
+            <div>
+                <label>Percentage</label>
+                <input placeholder="Ex: 20" onChange={(e) => setHighHandPercentage(e.target.value)} />
+                <select value={highHand} onChange={(e) => setHighHand(e.target.value)}>
+                    <option>--Select Player--</option>
+                        {currentRows && currentRows.map((row) => {
+                            return (
+                            <option value={row.playerName} key={row.playerName}>{row.playerName}</option>
+                            )
+                        })}
+                </select>
+            </div>
+            <button onClick={() => submitWinnings()}>Submit Winnings</button>
         </div>
     )
 }
