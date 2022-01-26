@@ -30,6 +30,7 @@ export default function Scoreboard() {
     const [secondPlace, setSecondPlace] = useState('');
     const [thirdPlace, setThirdPlace] = useState('');
     const [highHand, setHighHand] = useState('');
+    const [totalPot, setTotalPot] = useState(0);
 
 
     const loadSheet = async () => {
@@ -97,6 +98,16 @@ export default function Scoreboard() {
         }
         setSheetNames(sheetNameArr)
     }
+
+    const getTotalPot = async () => {
+        const rows = await doc.sheetsByTitle[tournamentName].getRows()
+        let pot=0;
+        rows.map((row) => {
+            pot += Number(row.buyIn);
+        })
+        setTotalPot(pot)
+    }
+
     // Sets value selected in dropdown to tournamentName state
     function handleTournamentChange(event) {
             setTournamentName(event.target.value);
@@ -109,7 +120,11 @@ export default function Scoreboard() {
 
     //Console.logs tournamentName whenever it changes
     useEffect(() => {
-        console.log(tournamentName)
+        console.log('rerender?')
+        if(tournamentName !== "" && tournamentName !== '--Select a Tournament--') {
+            getTotalPot()
+            getRows()
+        }
     }, [tournamentName])
 
     return (
@@ -147,8 +162,9 @@ export default function Scoreboard() {
                 </tbody>
             </table>
             <button onClick={() => getRows()}>Get Rows</button>
+            <p>Total Pot = {totalPot}</p>
             <select value={firstPlace} onChange={(e) => setFirstPlace(e.target.value)}>
-                <option>---Select Player---</option>
+                <option>--Select Player--</option>
                 {currentRows && currentRows.map((row) => {
                     return (
                     <option value={row.playerName} key={row.playerName}>{row.playerName}</option>
@@ -156,28 +172,28 @@ export default function Scoreboard() {
                 })}
             </select>
             <select value={secondPlace} onChange={(e) => setSecondPlace(e.target.value)}>
-            <option>---Select Player---</option>
-                {currentRows && currentRows.map((row) => {
-                    return (
-                    <option value={row.playerName} key={row.playerName}>{row.playerName}</option>
-                    )
-                })}
+                <option>---Select Player---</option>
+                    {currentRows && currentRows.map((row) => {
+                        return (
+                        <option value={row.playerName} key={row.playerName}>{row.playerName}</option>
+                        )
+                    })}
             </select>
             <select value={thirdPlace} onChange={(e) => setThirdPlace(e.target.value)}>
-            <option>---Select Player---</option>
-                {currentRows && currentRows.map((row) => {
-                    return (
-                    <option value={row.playerName} key={row.playerName}>{row.playerName}</option>
-                    )
-                })}
+                <option>---Select Player---</option>
+                    {currentRows && currentRows.map((row) => {
+                        return (
+                        <option value={row.playerName} key={row.playerName}>{row.playerName}</option>
+                        )
+                    })}
             </select>
             <select value={highHand} onChange={(e) => setHighHand(e.target.value)}>
-            <option>---Select Player---</option>
-                {currentRows && currentRows.map((row) => {
-                    return (
-                    <option value={row.playerName} key={row.playerName}>{row.playerName}</option>
-                    )
-                })}
+                <option>---Select Player---</option>
+                    {currentRows && currentRows.map((row) => {
+                        return (
+                        <option value={row.playerName} key={row.playerName}>{row.playerName}</option>
+                        )
+                    })}
             </select>
         </div>
     )
