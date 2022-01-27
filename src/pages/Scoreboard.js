@@ -154,22 +154,33 @@ export default function Scoreboard() {
     }
 
     const sendResultsToOverall = async () => {
+        //current tournament sheet
         const currentSheet = doc.sheetsByTitle[tournamentName];
+        //overall sheet
         const overallSheet = doc.sheetsByTitle['Overall'];
+        //current tournament rows
         const rows = await currentSheet.getRows();
+        //overall sheet rows
         const overallRows = await overallSheet.getRows();
-        const updatedPlayers = [];
         for (let i = 0; i < overallRows.length; i++) {
             for(let j=0; j < rows.length; j++) {
+                //if row has same name as a player in the overall sheet, add the buyIn and winnings to that player on the overall sheet
                 if(rows[j].playerName === overallRows[i].playerName) {
                     overallRows[i].buyIn = Number(rows[j].buyIn) + Number(overallRows[i].buyIn)
                     overallRows[i].winnings = Number(rows[j].winnings) + Number(overallRows[i].buyIn)
-                    updatedPlayers.push(rows[j])
-                    console.log(updatedPlayers)
                     await overallRows[i].save()
+                    //remove player from rows array after the data has been sent to the overall sheet
+                    rows.splice(j, 1)
                 }
             }
         }
+        //take the remaining players that did not find a match on the overall sheet
+        //make an entry for them
+        for(let i=0; i < rows.length; i++) {
+            const newRow = await overallSheet.addRow({ playerName: rows[i].playerName, buyIn: rows[i].buyIn, winnings: rows[i].winnings });
+        }
+
+
     }
 
     // Loads the doc and filled sheetNames with all names of sheets in the doc
