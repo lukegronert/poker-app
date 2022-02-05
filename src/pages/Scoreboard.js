@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import EntryForm from '../components/EntryForm';
 import PlayerCard from '../components/NewTournamentPlayerCard';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
-import { Button, Input, Table } from 'semantic-ui-react';
+import { Button, Input, Table, Dropdown } from 'semantic-ui-react';
 
 const {REACT_APP_SHEET_ID} = process.env;
 const {REACT_APP_GOOGLE_CLIENT_EMAIL} = process.env;
@@ -25,6 +25,7 @@ export default function Scoreboard() {
     const [tournamentName, setTournamentName] = useState('');
     const [currentRows, setCurrentRows] = useState([]);
     const [sheetNames, setSheetNames] = useState([]);
+    const [tournamentPlayers, setTournamentPlayers] = useState([]);
     const [firstPlace, setFirstPlace] = useState('');
     const [secondPlace, setSecondPlace] = useState('');
     const [thirdPlace, setThirdPlace] = useState('');
@@ -54,11 +55,21 @@ export default function Scoreboard() {
         const sheet = doc.sheetsByTitle[tournamentName];
         const newRow = await sheet.addRow({ playerName: pName, buyIn: buyInAmount, winnings: 0 });
         getRows();
+        getTotalPot();
     }
     //Retrieves rows from selected tournament sheet
     const getRows = async () => {
         const rows = await doc.sheetsByTitle[tournamentName].getRows()
         setCurrentRows(rows)
+        let players = [];
+        for (let i = 0; i<rows.length; i++) {
+            players.push({
+                key: rows[i].playerName,
+                value: rows[i].playerName,
+                text: rows[i].playerName
+            })
+        }
+        setTournamentPlayers(players);
     }
 
     const addRebuy = async (playerName) => {
@@ -92,7 +103,11 @@ export default function Scoreboard() {
         let i = 1;
         let sheetNameArr = [];
         while(doc.sheetsByIndex[i] !== undefined) {
-            sheetNameArr.push(doc.sheetsByIndex[i].title)
+            sheetNameArr.push({
+                key: doc.sheetsByIndex[i].title,
+                value: doc.sheetsByIndex[i].title,
+                text: doc.sheetsByIndex[i].title
+            })
             console.log(doc.sheetsByIndex[i].title)
             i++
         }
@@ -114,8 +129,7 @@ export default function Scoreboard() {
         }
 
     const submitWinnings = async () => {
-        const sheet = doc.sheetsByTitle[tournamentName];
-        const rows = await sheet.getRows();
+        const rows = await doc.sheetsByTitle[tournamentName].getRows();
         if(firstPlace && firstPlacePercentage) {
             for (let i = 0; i < rows.length; i++) {
                 if(rows[i].playerName === firstPlace) {
@@ -199,14 +213,7 @@ export default function Scoreboard() {
         <div>
             <Input placeholder="MonthYear" onChange={(e) => setNewTournamentName(e.target.value)} />
             <Button primary onClick={() => createNewSheet(newTournamentName)}>Create New Tourament</Button>
-            <select name="tournaments" value={tournamentName} onChange={(handleTournamentChange)}>
-                <option>--Select a Tournament--</option>
-                {sheetNames && sheetNames.map((sheet) => {
-                    return (
-                        <option value={sheet} key={sheet}>{sheet}</option>
-                    )
-                })}
-            </select>
+            <Dropdown search selection value={tournamentName} placeholder="Select Tournament" options={sheetNames} onChange={(e, {value}) => setTournamentName(value)} />
             <EntryForm addRow={addRow} />
             {tournamentName}
             <Table celled fixed singleLine>
@@ -234,50 +241,22 @@ export default function Scoreboard() {
             <div>
                 <label>Percentage</label>
                 <Input placeholder="Ex: 50" onChange={(e) => setFirstPlacePercentage(e.target.value)} />
-                <select value={firstPlace} onChange={(e) => setFirstPlace(e.target.value)}>
-                    <option>--Select Player--</option>
-                    {currentRows && currentRows.map((row) => {
-                        return (
-                        <option value={row.playerName} key={row.playerName}>{row.playerName}</option>
-                        )
-                    })}
-                </select>
+                <Dropdown search selection value={firstPlace} placeholder="Select Player" options={tournamentPlayers} onChange={(e, {value}) => setFirstPlace(value)} />
             </div>
             <div>
                 <label>Percentage</label>
                 <Input placeholder="Ex: 30" onChange={(e) => setSecondPlacePercentage(e.target.value)} />
-                <select value={secondPlace} onChange={(e) => setSecondPlace(e.target.value)}>
-                    <option>--Select Player--</option>
-                        {currentRows && currentRows.map((row) => {
-                            return (
-                            <option value={row.playerName} key={row.playerName}>{row.playerName}</option>
-                            )
-                        })}
-                </select>
+                <Dropdown search selection value={secondPlace} placeholder="Select Player" options={tournamentPlayers} onChange={(e, {value}) => setSecondPlace(value)} />
             </div>
             <div>
                 <label>Percentage</label>
                 <Input placeholder="Ex: 15" onChange={(e) => setThirdPlacePercentage(e.target.value)} />
-                <select value={thirdPlace} onChange={(e) => setThirdPlace(e.target.value)}>
-                    <option>--Select Player--</option>
-                        {currentRows && currentRows.map((row) => {
-                            return (
-                            <option value={row.playerName} key={row.playerName}>{row.playerName}</option>
-                            )
-                        })}
-                </select>
+                <Dropdown search selection value={thirdPlace} placeholder="Select Player" options={tournamentPlayers} onChange={(e, {value}) => setThirdPlace(value)} />
             </div>
             <div>
                 <label>Percentage</label>
                 <Input placeholder="Ex: 5" onChange={(e) => setHighHandPercentage(e.target.value)} />
-                <select value={highHand} onChange={(e) => setHighHand(e.target.value)}>
-                    <option>--Select Player--</option>
-                        {currentRows && currentRows.map((row) => {
-                            return (
-                            <option value={row.playerName} key={row.playerName}>{row.playerName}</option>
-                            )
-                        })}
-                </select>
+                <Dropdown search selection value={highHand} placeholder="Select Player" options={tournamentPlayers} onChange={(e, {value}) => setHighHand(value)} />
             </div>
             <Button onClick={() => submitWinnings()}>Submit Winnings</Button>
             <Button onClick={() => sendResultsToOverall()}>Send to Overall Scoreboard</Button>
