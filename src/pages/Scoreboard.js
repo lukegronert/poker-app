@@ -22,10 +22,8 @@ const doc = new GoogleSpreadsheet(REACT_APP_SHEET_ID);
 export default function Scoreboard() {
     const [newTournamentName, setNewTournamentName] = useState('');
     const [tournamentName, setTournamentName] = useState('');
-    const [currentSheet, setCurrentSheet] = useState({});
     const [currentRows, setCurrentRows] = useState([]);
     const [sheetNames, setSheetNames] = useState([]);
-    const [tournamentPlayers, setTournamentPlayers] = useState([]);
     const [firstPlace, setFirstPlace] = useState('');
     const [secondPlace, setSecondPlace] = useState('');
     const [thirdPlace, setThirdPlace] = useState('');
@@ -35,7 +33,6 @@ export default function Scoreboard() {
     const [secondPlacePercentage, setSecondPlacePercentage] = useState(0);
     const [thirdPlacePercentage, setThirdPlacePercentage] = useState(0);
     const [highHandPercentage, setHighHandPercentage] = useState(0);
-    const [results, setResults] = useState([]);
 
 
     const loadSheet = async () => {
@@ -55,18 +52,12 @@ export default function Scoreboard() {
     const addRow = async (pName, buyInAmount, winnings) => {
         const sheet = doc.sheetsByTitle[tournamentName];
         const newRow = await sheet.addRow({ playerName: pName, buyIn: buyInAmount, winnings: winnings });
-        setCurrentSheet(sheet)
         getRows();
     }
     //Retrieves rows from selected tournament sheet
     const getRows = async () => {
         const rows = await doc.sheetsByTitle[tournamentName].getRows()
         setCurrentRows(rows)
-        let tournamentPlayersArr = [];
-        currentRows.map((row) => {
-            tournamentPlayersArr.push(row.playerName)
-        })
-        setTournamentPlayers(tournamentPlayersArr)
     }
 
     const addRebuy = async (playerName) => {
@@ -122,35 +113,41 @@ export default function Scoreboard() {
         }
 
     const submitWinnings = async () => {
-        if(firstPlace, firstPlacePercentage, secondPlace, secondPlacePercentage, thirdPlace, thirdPlacePercentage, highHand, highHandPercentage) {
-            const sheet = doc.sheetsByTitle[tournamentName];
-            const rows = await sheet.getRows();
+        const sheet = doc.sheetsByTitle[tournamentName];
+        const rows = await sheet.getRows();
+        if(firstPlace && firstPlacePercentage) {
             for (let i = 0; i < rows.length; i++) {
                 if(rows[i].playerName === firstPlace) {
-                    rows[i].winnings += Number((firstPlacePercentage / 100) * totalPot)
+                    rows[i].winnings = Number(rows[i].winnings) + Number((firstPlacePercentage / 100) * totalPot)
                     await rows[i].save()
                 }
             }
+        }
+        if (secondPlace && secondPlacePercentage) {
             for (let i = 0; i < rows.length; i++) {
                 if(rows[i].playerName === secondPlace) {
-                    rows[i].winnings += Number((secondPlacePercentage / 100) * totalPot)
+                    rows[i].winnings = Number(rows[i].winnings) + Number((secondPlacePercentage / 100) * totalPot)
                     await rows[i].save()
                 }
             }
+        }
+        if (thirdPlace && thirdPlacePercentage) {
             for (let i = 0; i < rows.length; i++) {
                 if(rows[i].playerName === thirdPlace) {
-                    rows[i].winnings += Number((thirdPlacePercentage/ 100) * totalPot)
+                    rows[i].winnings = Number(rows[i].winnings) + Number((thirdPlacePercentage/ 100) * totalPot)
                     await rows[i].save()
                 }
             }
+        }
+        if (highHand && highHandPercentage) {
             for (let i = 0; i < rows.length; i++) {
                 if(rows[i].playerName === highHand) {
-                    rows[i].winnings += Number((highHandPercentage / 100) * totalPot)
+                    rows[i].winnings = Number(rows[i].winnings) + Number((highHandPercentage / 100) * totalPot)
                     await rows[i].save()
                 }
             }
-            getRows()
         }
+        getRows()
     }
 
     const sendResultsToOverall = async () => {
