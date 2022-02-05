@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PlayerCard from '../components/OverallPlayerCard';
-import netlifyIdentity from 'netlify-identity-widget';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
+import { Table } from 'semantic-ui-react';
 
 function openNetlifyModal() {
   const netlifyIdentity = window.netlifyIdentity;
@@ -51,24 +51,24 @@ export default function Home() {
         <div>
             <h1>Gronert's Horseshoe</h1>
             <button onClick={() => openNetlifyModal()}>Login/Sign Up</button>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Player Name</th>
-                        <th>Total Buy Ins</th>
-                        <th>Total Winnings</th>
-                        <th>+/-</th>  
-                    </tr>
-                </thead>
-                <tbody>
+            <Table celled fixed singleLine>
+                <Table.Header>
+                    <Table.Row>
+                        <Table.HeaderCell>Player Name</Table.HeaderCell>
+                        <Table.HeaderCell>Total Buy Ins</Table.HeaderCell>
+                        <Table.HeaderCell>Total Winnings</Table.HeaderCell>
+                        <Table.HeaderCell>+/-</Table.HeaderCell>  
+                    </Table.Row>
+                </Table.Header>
+                <Table.Body>
                     {playerRows && playerRows.map((row) => {
                         return (
                             <PlayerCard playerName={row.playerName} totalBuyIns={row.buyIn} winnings={row.winnings}
                                         key={playerRows.indexOf(row)} />
                         )
                     })}
-                </tbody>
-            </table>
+                </Table.Body>
+            </Table>
         </div>
     )
 }

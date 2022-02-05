@@ -1,13 +1,14 @@
-import React from 'react'
+import React from 'react';
+import { Button, Table } from 'semantic-ui-react';
 
 export default function PlayerCard({playerName, totalBuyIns, addRebuy, removePlayer, winnings}) {
     return (
-        <tr>
-            <td>{playerName}</td>
-            <td>{totalBuyIns}</td>
-            <td>{winnings}</td>
-            <td><button onClick={() => addRebuy(playerName)}>Buy In $20</button></td>
-            <td><button onClick={() => removePlayer(playerName)}>Delete Player</button></td>
-        </tr>
+        <Table.Row>
+            <Table.Cell>{playerName}</Table.Cell>
+            <Table.Cell>{totalBuyIns}</Table.Cell>
+            <Table.Cell>{winnings}</Table.Cell>
+            <Table.Cell><Button onClick={() => addRebuy(playerName)}>Buy In $20</Button></Table.Cell>
+            <Table.Cell><Button onClick={() => removePlayer(playerName)}>Delete Player</Button></Table.Cell>
+        </Table.Row>
     )
 }

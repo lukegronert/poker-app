@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import EntryForm from '../components/EntryForm';
 import PlayerCard from '../components/NewTournamentPlayerCard';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
+import { Button, Input, Table } from 'semantic-ui-react';
 
 const {REACT_APP_SHEET_ID} = process.env;
 const {REACT_APP_GOOGLE_CLIENT_EMAIL} = process.env;
@@ -49,9 +50,9 @@ export default function Scoreboard() {
         }
     }
     // Used when adding a player to the tournament, adds a row entry to the sheet with name and buyin amount
-    const addRow = async (pName, buyInAmount, winnings) => {
+    const addRow = async (pName, buyInAmount) => {
         const sheet = doc.sheetsByTitle[tournamentName];
-        const newRow = await sheet.addRow({ playerName: pName, buyIn: buyInAmount, winnings: winnings });
+        const newRow = await sheet.addRow({ playerName: pName, buyIn: buyInAmount, winnings: 0 });
         getRows();
     }
     //Retrieves rows from selected tournament sheet
@@ -196,8 +197,8 @@ export default function Scoreboard() {
 
     return (
         <div>
-            <input placeholder="MonthYear" onChange={(e) => setNewTournamentName(e.target.value)} />
-            <button onClick={() => createNewSheet(newTournamentName)}>Create New Tourament</button>
+            <Input placeholder="MonthYear" onChange={(e) => setNewTournamentName(e.target.value)} />
+            <Button primary onClick={() => createNewSheet(newTournamentName)}>Create New Tourament</Button>
             <select name="tournaments" value={tournamentName} onChange={(handleTournamentChange)}>
                 <option>--Select a Tournament--</option>
                 {sheetNames && sheetNames.map((sheet) => {
@@ -208,17 +209,17 @@ export default function Scoreboard() {
             </select>
             <EntryForm addRow={addRow} />
             {tournamentName}
-            <table>
-                <thead>
-                    <tr>
-                        <th>Player Name</th>
-                        <th>Total Buy Ins</th>
-                        <th>Winnings</th>
-                        <th></th>
-                        <th></th>  
-                    </tr>
-                </thead>
-                <tbody>
+            <Table celled fixed singleLine>
+                <Table.Header>
+                    <Table.Row>
+                        <Table.HeaderCell>Player Name</Table.HeaderCell>
+                        <Table.HeaderCell>Total Buy Ins</Table.HeaderCell>
+                        <Table.HeaderCell>Winnings</Table.HeaderCell>
+                        <Table.HeaderCell></Table.HeaderCell>
+                        <Table.HeaderCell></Table.HeaderCell>  
+                    </Table.Row>
+                </Table.Header>
+                <Table.Body>
                     {currentRows && currentRows.map((row) => {
                         return (
                             <PlayerCard playerName={row.playerName} totalBuyIns={row.buyIn} winnings={row.winnings}
@@ -226,13 +227,13 @@ export default function Scoreboard() {
                                         key={currentRows.indexOf(row)} />
                         )
                     })}
-                </tbody>
-            </table>
-            <button onClick={() => getRows()}>Get Rows</button>
+                </Table.Body>
+            </Table>
+            <Button onClick={() => getRows()}>Get Rows</Button>
             <p>Total Pot = {totalPot}</p>
             <div>
                 <label>Percentage</label>
-                <input placeholder="Ex: 50" onChange={(e) => setFirstPlacePercentage(e.target.value)} />
+                <Input placeholder="Ex: 50" onChange={(e) => setFirstPlacePercentage(e.target.value)} />
                 <select value={firstPlace} onChange={(e) => setFirstPlace(e.target.value)}>
                     <option>--Select Player--</option>
                     {currentRows && currentRows.map((row) => {
@@ -244,7 +245,7 @@ export default function Scoreboard() {
             </div>
             <div>
                 <label>Percentage</label>
-                <input placeholder="Ex: 30" onChange={(e) => setSecondPlacePercentage(e.target.value)} />
+                <Input placeholder="Ex: 30" onChange={(e) => setSecondPlacePercentage(e.target.value)} />
                 <select value={secondPlace} onChange={(e) => setSecondPlace(e.target.value)}>
                     <option>--Select Player--</option>
                         {currentRows && currentRows.map((row) => {
@@ -256,7 +257,7 @@ export default function Scoreboard() {
             </div>
             <div>
                 <label>Percentage</label>
-                <input placeholder="Ex: 15" onChange={(e) => setThirdPlacePercentage(e.target.value)} />
+                <Input placeholder="Ex: 15" onChange={(e) => setThirdPlacePercentage(e.target.value)} />
                 <select value={thirdPlace} onChange={(e) => setThirdPlace(e.target.value)}>
                     <option>--Select Player--</option>
                         {currentRows && currentRows.map((row) => {
@@ -268,7 +269,7 @@ export default function Scoreboard() {
             </div>
             <div>
                 <label>Percentage</label>
-                <input placeholder="Ex: 5" onChange={(e) => setHighHandPercentage(e.target.value)} />
+                <Input placeholder="Ex: 5" onChange={(e) => setHighHandPercentage(e.target.value)} />
                 <select value={highHand} onChange={(e) => setHighHand(e.target.value)}>
                     <option>--Select Player--</option>
                         {currentRows && currentRows.map((row) => {
@@ -278,8 +279,8 @@ export default function Scoreboard() {
                         })}
                 </select>
             </div>
-            <button onClick={() => submitWinnings()}>Submit Winnings</button>
-            <button onClick={() => sendResultsToOverall()}>Send to Overall Scoreboard</button>
+            <Button onClick={() => submitWinnings()}>Submit Winnings</Button>
+            <Button onClick={() => sendResultsToOverall()}>Send to Overall Scoreboard</Button>
         </div>
     )
 }
