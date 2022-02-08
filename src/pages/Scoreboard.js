@@ -4,6 +4,8 @@ import PlayerCard from '../components/NewTournamentPlayerCard';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { Button, Input, Table, Dropdown } from 'semantic-ui-react';
 
+import '../css/scoreboard.css';
+
 const {REACT_APP_SHEET_ID} = process.env;
 const {REACT_APP_GOOGLE_CLIENT_EMAIL} = process.env;
 const {REACT_APP_GOOGLE_PRIVATE_KEY} = process.env;
@@ -123,11 +125,6 @@ export default function Scoreboard() {
         setTotalPot(pot)
     }
 
-    // Sets value selected in dropdown to tournamentName state
-    function handleTournamentChange(event) {
-            setTournamentName(event.target.value);
-        }
-
     const submitWinnings = async () => {
         const rows = await doc.sheetsByTitle[tournamentName].getRows();
         if(firstPlace && firstPlacePercentage) {
@@ -215,17 +212,17 @@ export default function Scoreboard() {
             <Button primary onClick={() => createNewSheet(newTournamentName)}>Create New Tourament</Button>
             <Dropdown search selection value={tournamentName} placeholder="Select Tournament" options={sheetNames} onChange={(e, {value}) => setTournamentName(value)} />
             <EntryForm addRow={addRow} />
-            {tournamentName}
-            <Table celled fixed singleLine>
-                <Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell>Player Name</Table.HeaderCell>
-                        <Table.HeaderCell>Total Buy Ins</Table.HeaderCell>
-                        <Table.HeaderCell>Winnings</Table.HeaderCell>
-                        <Table.HeaderCell></Table.HeaderCell>
-                        <Table.HeaderCell></Table.HeaderCell>  
-                    </Table.Row>
-                </Table.Header>
+            <h2>{tournamentName}</h2>
+            <Table fixed compact singleLine>
+                    <Table.Header className="tableHeader">
+                            <Table.Row>
+                                <Table.HeaderCell width={2}></Table.HeaderCell>
+                                <Table.HeaderCell width={5}>Player Name</Table.HeaderCell>
+                                <Table.HeaderCell width={5}>Buy In Total</Table.HeaderCell>
+                                <Table.HeaderCell width={5}>Winnings</Table.HeaderCell>
+                                <Table.HeaderCell width={2}></Table.HeaderCell>
+                            </Table.Row>
+                    </Table.Header>
                 <Table.Body>
                     {currentRows && currentRows.map((row) => {
                         return (
