@@ -3,6 +3,8 @@ import EntryForm from '../components/EntryForm';
 import PlayerCard from '../components/NewTournamentPlayerCard';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { Button, Input, Table, Dropdown } from 'semantic-ui-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleMinus, faCoins } from '@fortawesome/free-solid-svg-icons';
 
 import '../css/scoreboard.css';
 
@@ -207,7 +209,7 @@ export default function Scoreboard() {
     }, [tournamentName])
 
     return (
-        <div>
+        <div className="container">
             <Input placeholder="MonthYear" onChange={(e) => setNewTournamentName(e.target.value)} />
             <Button primary onClick={() => createNewSheet(newTournamentName)}>Create New Tourament</Button>
             <Dropdown search selection value={tournamentName} placeholder="Select Tournament" options={sheetNames} onChange={(e, {value}) => setTournamentName(value)} />
@@ -215,9 +217,10 @@ export default function Scoreboard() {
             <h2>{tournamentName}</h2>
             <div className="grid-container">
                 <div className="scoreboardGrid">
-                    <div>Name</div>
-                    <div>Buy Ins</div>
-                    <div>Winnings</div>
+                    <div className="gridHeader">Name</div>
+                    <div className="gridHeader"><FontAwesomeIcon icon={faCircleMinus} color="red" /></div>
+                    <div className="gridHeader"><FontAwesomeIcon icon={faCoins} color="gold" /></div>
+                    <div></div>
               </div>
                     {currentRows && currentRows.map((row) => {
                         return (

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import PlayerCard from '../components/OverallPlayerCard';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import '../css/grid.css';
+import '../css/home.css';
 
 function openNetlifyModal() {
   const netlifyIdentity = window.netlifyIdentity;
@@ -44,15 +45,15 @@ export default function Home() {
   }, [])
 
     return (
-        <div>
+        <div className="container">
             <h1>Gronert's Horseshoe</h1>
             <button onClick={() => openNetlifyModal()}>Login/Sign Up</button>
             <div className='grid-container'>
               <div className="homeGrid">
-                <div>Name</div>
-                <div className="noMobileDisplay">Buy Ins</div>
-                <div className="noMobileDisplay">Winnings</div>
-                <div>=/-</div>
+                <div className="gridHeader">Name</div>
+                <div className="noMobileDisplay gridHeader">Buy Ins</div>
+                <div className="noMobileDisplay gridHeader">Winnings</div>
+                <div className="gridHeader">=/-</div>
               </div>
                     {/* Sort playerRows by highest +/- which returns an ordered array */}
                     {playerRows && playerRows.sort((a,b) => {

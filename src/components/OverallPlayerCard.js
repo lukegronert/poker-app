@@ -12,11 +12,11 @@ export default function PlayerCard({playerName, totalBuyIns, winnings}) {
     });
 
     return (
-        <div className="grid">
-            <div>{playerName}</div>
-            <div className="noMobileDisplay">{totalBuyIns}</div>
-            <div className="noMobileDisplay">{winnings}</div>
-            <div>{plusMinus}</div>
+        <div className="homeGrid">
+            <div className="playerName">{playerName}</div>
+            <div className="noMobileDisplay buyIns">{totalBuyIns}</div>
+            <div className="noMobileDisplay winnings">{winnings}</div>
+            <div className="plusMinus">{plusMinus}</div>
         </div>
     )
 }

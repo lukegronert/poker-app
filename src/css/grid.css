@@ -1,8 +1,31 @@
-.grid,
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 20px;
+}
+
+.homeGrid,
 .scoreboardGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  justify-items: center;
+  grid-template-columns: 3fr 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  font-size: 2rem;
+  align-items: center;
+}
+
+.homeGrid {
+  row-gap: 20px;
+}
+
+.homeGrid .plusMinus,
+.homeGrid .buyIns,
+.homeGrid .winnings {
+  justify-self: center;
+}
+
+.scoreboardGrid .totalBuyIns,
+.scoreboardGrid .winnings {
+  justify-self: center;
 }
 
 .buttonGrid {
@@ -10,18 +33,33 @@
   grid-template-columns: 1fr 1fr;
 }
 
+.playerName {
+  font-size: 2rem;
+}
+
+.gridHeader {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.gridHeader:nth-child(1) {
+  justify-self: start;
+}
+
 @media screen and (max-width: 600px) {
   .noMobileDisplay {
     display: none;
   }
 
-  .grid {
-    grid-template-columns: 1fr 1fr;
+  .homeGrid {
+    grid-template-columns: 2fr 1fr;
   }
 
   .scoreboardGrid {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    align-items: center;
+    grid-template-columns: 3fr 1fr 1fr 2fr;
+    justify-items: center;
+    line-height: 2.2rem;
   }
 
   .buttonGrid {
