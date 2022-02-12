@@ -1,0 +1,30 @@
+.grid,
+.scoreboardGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  justify-items: center;
+}
+
+.buttonGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+@media screen and (max-width: 600px) {
+  .noMobileDisplay {
+    display: none;
+  }
+
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .scoreboardGrid {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    align-items: center;
+  }
+
+  .buttonGrid {
+    grid-template-columns: 1fr;
+  }
+}

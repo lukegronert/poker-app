@@ -213,17 +213,12 @@ export default function Scoreboard() {
             <Dropdown search selection value={tournamentName} placeholder="Select Tournament" options={sheetNames} onChange={(e, {value}) => setTournamentName(value)} />
             <EntryForm addRow={addRow} />
             <h2>{tournamentName}</h2>
-            <Table fixed compact singleLine>
-                    <Table.Header className="tableHeader">
-                            <Table.Row>
-                                <Table.HeaderCell width={2}></Table.HeaderCell>
-                                <Table.HeaderCell width={5}>Player Name</Table.HeaderCell>
-                                <Table.HeaderCell width={5}>Buy In Total</Table.HeaderCell>
-                                <Table.HeaderCell width={5}>Winnings</Table.HeaderCell>
-                                <Table.HeaderCell width={2}></Table.HeaderCell>
-                            </Table.Row>
-                    </Table.Header>
-                <Table.Body>
+            <div className="grid-container">
+                <div className="scoreboardGrid">
+                    <div>Name</div>
+                    <div>Buy Ins</div>
+                    <div>Winnings</div>
+              </div>
                     {currentRows && currentRows.map((row) => {
                         return (
                             <PlayerCard playerName={row.playerName} totalBuyIns={row.buyIn} winnings={row.winnings}
@@ -231,8 +226,7 @@ export default function Scoreboard() {
                                         key={currentRows.indexOf(row)} />
                         )
                     })}
-                </Table.Body>
-            </Table>
+            </div>
             <Button onClick={() => getRows()}>Get Rows</Button>
             <p>Total Pot = {totalPot}</p>
             <div>

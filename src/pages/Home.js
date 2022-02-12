@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PlayerCard from '../components/OverallPlayerCard';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
-import { Table } from 'semantic-ui-react';
+import '../css/grid.css';
 
 function openNetlifyModal() {
   const netlifyIdentity = window.netlifyIdentity;
@@ -47,16 +47,13 @@ export default function Home() {
         <div>
             <h1>Gronert's Horseshoe</h1>
             <button onClick={() => openNetlifyModal()}>Login/Sign Up</button>
-            <Table celled fixed singleLine>
-                <Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell>Player Name</Table.HeaderCell>
-                        <Table.HeaderCell>Total Buy Ins</Table.HeaderCell>
-                        <Table.HeaderCell>Total Winnings</Table.HeaderCell>
-                        <Table.HeaderCell>+/-</Table.HeaderCell>  
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body>
+            <div className='grid-container'>
+              <div className="homeGrid">
+                <div>Name</div>
+                <div className="noMobileDisplay">Buy Ins</div>
+                <div className="noMobileDisplay">Winnings</div>
+                <div>=/-</div>
+              </div>
                     {/* Sort playerRows by highest +/- which returns an ordered array */}
                     {playerRows && playerRows.sort((a,b) => {
                       return ((b.winnings - b.buyIn) - (a.winnings - a.buyIn))
@@ -67,8 +64,7 @@ export default function Home() {
                                         key={playerRows.indexOf(row)} />
                         )
                     })}
-                </Table.Body>
-            </Table>
+            </div>
         </div>
     )
 }
