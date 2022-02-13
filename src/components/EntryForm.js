@@ -15,7 +15,7 @@ const EntryForm = ({addRow}) => {
             <label>Buy-in Amount</label>
             <input placeholder='20' onChange={(e) => setBuyIn(e.target.value)} />
           </Form.Field>
-          <Button color="green" type='submit' onClick={() => addRow(playerName, buyIn)}>Submit</Button>
+          <Button color="blue" type='submit' onClick={() => addRow(playerName, buyIn)}>Submit</Button>
         </Form>
       </div>
   )

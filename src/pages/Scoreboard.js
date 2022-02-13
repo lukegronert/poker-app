@@ -3,8 +3,6 @@ import EntryForm from '../components/EntryForm';
 import PlayerCard from '../components/NewTournamentPlayerCard';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { Button, Input, Table, Dropdown } from 'semantic-ui-react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleMinus, faCoins } from '@fortawesome/free-solid-svg-icons';
 
 import '../css/scoreboard.css';
 
@@ -208,52 +206,66 @@ export default function Scoreboard() {
         }
     }, [tournamentName])
 
-    return (
-        <div className="container">
-            <Input placeholder="MonthYear" onChange={(e) => setNewTournamentName(e.target.value)} />
-            <Button primary onClick={() => createNewSheet(newTournamentName)}>Create New Tourament</Button>
-            <Dropdown search selection value={tournamentName} placeholder="Select Tournament" options={sheetNames} onChange={(e, {value}) => setTournamentName(value)} />
-            <EntryForm addRow={addRow} />
-            <h2>{tournamentName}</h2>
-            <div className="grid-container">
-                <div className="scoreboardGrid">
-                    <div className="gridHeader">Name</div>
-                    <div className="gridHeader"><FontAwesomeIcon icon={faCircleMinus} color="red" /></div>
-                    <div className="gridHeader"><FontAwesomeIcon icon={faCoins} color="gold" /></div>
-                    <div></div>
-              </div>
-                    {currentRows && currentRows.map((row) => {
-                        return (
-                            <PlayerCard playerName={row.playerName} totalBuyIns={row.buyIn} winnings={row.winnings}
-                                        addRebuy={addRebuy} removePlayer={removePlayer}
-                                        key={currentRows.indexOf(row)} />
-                        )
-                    })}
+    if (!tournamentName) {
+        return (
+            <div className="container">
+                <section>
+                    <Input placeholder="MonthYear" onChange={(e) => setNewTournamentName(e.target.value)} />
+                    <Button primary onClick={() => createNewSheet(newTournamentName)}>Create New Tourament</Button>
+                    <Dropdown search selection value={tournamentName} placeholder="Select Tournament" options={sheetNames} onChange={(e, {value}) => setTournamentName(value)} />
+                </section>
             </div>
-            <Button onClick={() => getRows()}>Get Rows</Button>
-            <p>Total Pot = {totalPot}</p>
-            <div>
-                <label>Percentage</label>
-                <Input placeholder="Ex: 50" onChange={(e) => setFirstPlacePercentage(e.target.value)} />
-                <Dropdown search selection value={firstPlace} placeholder="Select Player" options={tournamentPlayers} onChange={(e, {value}) => setFirstPlace(value)} />
-            </div>
-            <div>
-                <label>Percentage</label>
-                <Input placeholder="Ex: 30" onChange={(e) => setSecondPlacePercentage(e.target.value)} />
-                <Dropdown search selection value={secondPlace} placeholder="Select Player" options={tournamentPlayers} onChange={(e, {value}) => setSecondPlace(value)} />
-            </div>
-            <div>
-                <label>Percentage</label>
-                <Input placeholder="Ex: 15" onChange={(e) => setThirdPlacePercentage(e.target.value)} />
-                <Dropdown search selection value={thirdPlace} placeholder="Select Player" options={tournamentPlayers} onChange={(e, {value}) => setThirdPlace(value)} />
-            </div>
-            <div>
-                <label>Percentage</label>
-                <Input placeholder="Ex: 5" onChange={(e) => setHighHandPercentage(e.target.value)} />
-                <Dropdown search selection value={highHand} placeholder="Select Player" options={tournamentPlayers} onChange={(e, {value}) => setHighHand(value)} />
-            </div>
-            <Button onClick={() => submitWinnings()}>Submit Winnings</Button>
-            <Button onClick={() => sendResultsToOverall()}>Send to Overall Scoreboard</Button>
-        </div>
-    )
-}
+        )
+     } else {
+            return (
+                <div className="container">
+                    <section>
+                        <Input placeholder="MonthYear" onChange={(e) => setNewTournamentName(e.target.value)} />
+                        <Button primary onClick={() => createNewSheet(newTournamentName)}>Create New Tourament</Button>
+                        <Dropdown search selection value={tournamentName} placeholder="Select Tournament" options={sheetNames} onChange={(e, {value}) => setTournamentName(value)} />
+                    </section>
+                    <EntryForm addRow={addRow} />
+                    <h2>{tournamentName}</h2>
+                    <div className="grid-container">
+                        <div className="scoreboardGrid">
+                            <div className="gridHeader">Name</div>
+                            <div className="gridHeader"></div>
+                            <div className="gridHeader"></div>
+                            <div></div>
+                    </div>
+                            {currentRows && currentRows.map((row) => {
+                                return (
+                                    <PlayerCard playerName={row.playerName} totalBuyIns={row.buyIn} winnings={row.winnings}
+                                                addRebuy={addRebuy} removePlayer={removePlayer}
+                                                key={currentRows.indexOf(row)} />
+                                )
+                            })}
+                    </div>
+                    <Button onClick={() => getRows()}>Get Rows</Button>
+                    <p> {totalPot}</p>
+                    <div>
+                        <label>Percentage</label>
+                        <Input placeholder="Ex: 50" onChange={(e) => setFirstPlacePercentage(e.target.value)} />
+                        <Dropdown search selection value={firstPlace} placeholder="Select Player" options={tournamentPlayers} onChange={(e, {value}) => setFirstPlace(value)} />
+                    </div>
+                    <div>
+                        <label>Percentage</label>
+                        <Input placeholder="Ex: 30" onChange={(e) => setSecondPlacePercentage(e.target.value)} />
+                        <Dropdown search selection value={secondPlace} placeholder="Select Player" options={tournamentPlayers} onChange={(e, {value}) => setSecondPlace(value)} />
+                    </div>
+                    <div>
+                        <label>Percentage</label>
+                        <Input placeholder="Ex: 15" onChange={(e) => setThirdPlacePercentage(e.target.value)} />
+                        <Dropdown search selection value={thirdPlace} placeholder="Select Player" options={tournamentPlayers} onChange={(e, {value}) => setThirdPlace(value)} />
+                    </div>
+                    <div>
+                        <label>Percentage</label>
+                        <Input placeholder="Ex: 5" onChange={(e) => setHighHandPercentage(e.target.value)} />
+                        <Dropdown search selection value={highHand} placeholder="Select Player" options={tournamentPlayers} onChange={(e, {value}) => setHighHand(value)} />
+                    </div>
+                    <Button onClick={() => submitWinnings()}>Submit Winnings</Button>
+                    <Button onClick={() => sendResultsToOverall()}>Send to Overall Scoreboard</Button>
+                </div>
+            )
+        }
+    }
