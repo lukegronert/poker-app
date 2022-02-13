@@ -6,12 +6,25 @@ h2 {
   display: none;
 }
 
-@media screen and (max-width: 766px) {
-  .tableRow {
-    text-align: center;
-  }
+.totalPotSection {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 100px;
+  height: 300px;
+}
 
-  .mobileDescriptionSpan {
-    display: inline;
-  }
+.totalPotSection div {
+  margin-top: -50px;
+}
+
+.totalPotText {
+  display: block;
+  margin-top: -225px;
+  font-size: 100px;
+}
+
+@media screen and (max-width: 766px) {
 }

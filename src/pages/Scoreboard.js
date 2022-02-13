@@ -3,6 +3,9 @@ import EntryForm from '../components/EntryForm';
 import PlayerCard from '../components/NewTournamentPlayerCard';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { Button, Input, Table, Dropdown } from 'semantic-ui-react';
+import { GiOpenTreasureChest } from 'react-icons/gi';
+import { FaMinus, FaCoins } from 'react-icons/fa';
+import {IconContext} from 'react-icons';
 
 import '../css/scoreboard.css';
 
@@ -229,8 +232,16 @@ export default function Scoreboard() {
                     <div className="grid-container">
                         <div className="scoreboardGrid">
                             <div className="gridHeader">Name</div>
-                            <div className="gridHeader"></div>
-                            <div className="gridHeader"></div>
+                            <div className="gridHeader">
+                                <IconContext.Provider value={{ color: "red" }}>
+                                    <FaMinus />
+                                </IconContext.Provider>
+                            </div>
+                            <div className="gridHeader">
+                            <IconContext.Provider value={{ color: "gold" }}>
+                                    <FaCoins />
+                                </IconContext.Provider>
+                            </div>
                             <div></div>
                     </div>
                             {currentRows && currentRows.map((row) => {
@@ -241,8 +252,14 @@ export default function Scoreboard() {
                                 )
                             })}
                     </div>
-                    <Button onClick={() => getRows()}>Get Rows</Button>
-                    <p> {totalPot}</p>
+                    <section className="totalPotSection">
+                            <IconContext.Provider value={{ color: "gold", size: '300px' }}>
+                                <div>
+                                        <GiOpenTreasureChest />
+                                </div>
+                                <p className="totalPotText">{totalPot}</p>
+                            </IconContext.Provider>
+                    </section>
                     <div>
                         <label>Percentage</label>
                         <Input placeholder="Ex: 50" onChange={(e) => setFirstPlacePercentage(e.target.value)} />
