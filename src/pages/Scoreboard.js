@@ -213,9 +213,17 @@ export default function Scoreboard() {
         return (
             <div className="container">
                 <section>
-                    <Input placeholder="MonthYear" onChange={(e) => setNewTournamentName(e.target.value)} />
-                    <Button primary onClick={() => createNewSheet(newTournamentName)}>Create New Tourament</Button>
-                    <Dropdown search selection value={tournamentName} placeholder="Select Tournament" options={sheetNames} onChange={(e, {value}) => setTournamentName(value)} />
+                    <span>Create New Tournament: </span>
+                    <div>
+                        <Input placeholder="MonthYear" onChange={(e) => setNewTournamentName(e.target.value)} />
+                    </div>
+                    <div>
+                        <Button primary onClick={() => createNewSheet(newTournamentName)}>CREATE</Button>
+                    </div>
+                    <span> -OR- </span>
+                    <div>
+                        <Dropdown search selection value={tournamentName} placeholder="Select Tournament" options={sheetNames} onChange={(e, {value}) => setTournamentName(value)} />
+                    </div>
                 </section>
             </div>
         )
@@ -223,6 +231,7 @@ export default function Scoreboard() {
             return (
                 <div className="container">
                     <section>
+                        <span>Create New Tournament: </span>
                         <Input placeholder="MonthYear" onChange={(e) => setNewTournamentName(e.target.value)} />
                         <Button primary onClick={() => createNewSheet(newTournamentName)}>Create New Tourament</Button>
                         <Dropdown search selection value={tournamentName} placeholder="Select Tournament" options={sheetNames} onChange={(e, {value}) => setTournamentName(value)} />
@@ -257,7 +266,7 @@ export default function Scoreboard() {
                                 <div>
                                         <GiOpenTreasureChest />
                                 </div>
-                                <p className="totalPotText">{totalPot}</p>
+                                <p className="totalPotText">${totalPot}</p>
                             </IconContext.Provider>
                     </section>
                     <div>

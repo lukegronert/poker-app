@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Scoreboard from './pages/Scoreboard';
 import Home from './pages/Home';
 import Navbar from './components/Navbar';
+import './css/base.css';
 
 // Import Netlify Identity script into HTML of site
 // Must be called from React life-cycle function
