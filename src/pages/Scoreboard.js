@@ -191,8 +191,6 @@ export default function Scoreboard() {
         for(let i=0; i < rows.length; i++) {
             const newRow = await overallSheet.addRow({ playerName: rows[i].playerName, buyIn: rows[i].buyIn, winnings: rows[i].winnings });
         }
-
-
     }
 
     // Loads the doc and filled sheetNames with all names of sheets in the doc
@@ -235,7 +233,7 @@ export default function Scoreboard() {
                             <Dropdown className="input" search selection value={tournamentName} placeholder="Select Tournament" options={sheetNames} onChange={(e, {value}) => setTournamentName(value)} />
                         </section>
                         <section className="addPlayerForm">
-                        <h2>Add Players</h2>
+                            <h2>Add Players</h2>
                             <EntryForm addRow={addRow} />
                         </section>
                     </section>
