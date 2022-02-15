@@ -2,6 +2,42 @@ h2 {
   text-align: center;
 }
 
+.tournamentForms {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.newTournamentForm {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.newTournamentForm .input {
+  width: 100%;
+  height: 60px;
+}
+
+.addPlayerForm {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+label {
+  font-size: 20px;
+}
+
+.addPlayerForm .input {
+  height: 60px;
+}
+
+.addPlayerForm button {
+  width: 100%;
+}
+
 .mobileDescriptionSpan {
   display: none;
 }
@@ -26,5 +62,45 @@ h2 {
   font-size: 100px;
 }
 
+.percentageForm {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.percentageForm label {
+  width: 20%;
+}
+
+.percentageForm .input {
+  width: 39%;
+}
+
+.finalSubmitButtons {
+  display: flex;
+  justify-content: space-between;
+  width: 50%;
+  margin: 20px auto;
+}
+
+.finalSubmitButtons button {
+  margin: 0 20px;
+}
+
 @media screen and (max-width: 766px) {
+  .percentageForm {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .percentageForm label {
+    width: 100%;
+  }
+
+  .percentageForm .input {
+    width: 100%;
+  }
 }

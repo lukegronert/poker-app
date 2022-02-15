@@ -46,7 +46,8 @@ export default function Home() {
 
     return (
         <div className="container">
-            <h1>Gronert's Horseshoe</h1>
+            <h1>Gronert's</h1>
+            <h1>Horseshoe</h1>
             <button onClick={() => openNetlifyModal()}>Login/Sign Up</button>
             <div className='grid-container'>
               <div className="homeGrid">

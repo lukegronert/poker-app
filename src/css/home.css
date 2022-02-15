@@ -2,3 +2,26 @@
   width: 80%;
   margin: 0 auto;
 }
+
+h1 {
+  font-size: 100px;
+  text-align: center;
+  font-family: "Poker", sans-serif;
+  margin: 0;
+}
+
+@media screen and (max-width: 600px) {
+  h1 {
+    font-size: 50px;
+  }
+}
+
+.horseshoe-div {
+  display: flex;
+  justify-content: center;
+}
+
+.horseshoe-icon {
+  width: 50%;
+  text-align: center;
+}
