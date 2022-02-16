@@ -91,12 +91,13 @@ label {
 .finalSubmitButtons {
   display: flex;
   justify-content: space-between;
-  width: 50%;
+  width: 80%;
   margin: 20px auto;
 }
 
 .finalSubmitButtons button {
   margin: 0 20px;
+  width: 45%;
 }
 
 @media screen and (max-width: 766px) {
@@ -128,6 +129,17 @@ label {
   }
 
   .percentageForm .input {
+    width: 100%;
+  }
+
+  .finalSubmitButtons {
+    width: 100%;
+    flex-direction: column;
+    height: 100px;
+    justify-content: space-evenly;
+  }
+
+  .finalSubmitButtons button {
     width: 100%;
   }
 }
