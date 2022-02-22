@@ -100,6 +100,13 @@ label {
   width: 45%;
 }
 
+.display-linebreak {
+  white-space: pre-line;
+  line-height: 1.25rem;
+  width: 50%;
+  margin: 0 auto;
+}
+
 @media screen and (max-width: 766px) {
   .tournamentForms {
     width: 100%;
@@ -140,6 +147,15 @@ label {
   }
 
   .finalSubmitButtons button {
+    width: 100%;
+  }
+
+  /* Used !important to override semantic ui style that uncentered the modal header on mobile view */
+  .ui .modal > .header {
+    padding-left: 2.25rem !important;
+  }
+
+  .display-linebreak {
     width: 100%;
   }
 }

@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import EntryForm from '../components/EntryForm';
 import PlayerCard from '../components/NewTournamentPlayerCard';
+import ConfirmModal from '../components/Modal.js';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { Button, Input, Table, Dropdown } from 'semantic-ui-react';
 import { GiOpenTreasureChest } from 'react-icons/gi';
@@ -292,8 +293,16 @@ export default function Scoreboard() {
                             <Dropdown className="input" search selection value={highHand} placeholder="Select Player" options={tournamentPlayers} onChange={(e, {value}) => setHighHand(value)} />
                         </div>
                         <div className="finalSubmitButtons">
-                            <Button onClick={() => submitWinnings()}>Submit Winnings</Button>
-                            <Button onClick={() => sendResultsToOverall()}>Send to Overall Scoreboard</Button>
+                            <ConfirmModal title="Confirm Winnings" buttonText="Send Winnings" clickFunction={submitWinnings} icon="table"
+                                          content={`1st: ${firstPlace} $${firstPlacePercentage/100 * totalPot}\n
+                                                    2nd: ${secondPlace} $${secondPlacePercentage/100 * totalPot}\n
+                                                    3rd: ${thirdPlace} $${thirdPlacePercentage/100 * totalPot}\n
+                                                    High Hand: ${highHand} $${highHandPercentage/100 * totalPot}\n
+                                                    Total Pot: $${totalPot}\n
+                                                    Total Winnings to Send: $${(firstPlacePercentage/100 * totalPot) + (secondPlacePercentage/100 * totalPot) 
+                                                    + (thirdPlacePercentage/100 * totalPot) + (highHandPercentage/100 * totalPot)}`} />
+                            <ConfirmModal title="Send Results to Overall" buttonText="Send to Overall Scoreboard" clickFunction={sendResultsToOverall}
+                                          content="Are you sure you want to send the results to the overall scoreboard?" icon="dolly" />
                         </div>
                     </section>
                 </div>
