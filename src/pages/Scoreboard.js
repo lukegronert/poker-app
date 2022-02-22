@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import EntryForm from '../components/EntryForm';
 import PlayerCard from '../components/NewTournamentPlayerCard';
-import ConfirmModal from '../components/Modal.js';
+import ConfirmModal from '../components/Modal';
+import Footer from '../components/Footer';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { Button, Input, Table, Dropdown } from 'semantic-ui-react';
 import { GiOpenTreasureChest } from 'react-icons/gi';
@@ -305,6 +306,7 @@ export default function Scoreboard() {
                                           content="Are you sure you want to send the results to the overall scoreboard?" icon="dolly" />
                         </div>
                     </section>
+                    <Footer />
                 </div>
             )
         }

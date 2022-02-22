@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PlayerCard from '../components/OverallPlayerCard';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
+import Footer from '../components/Footer';
 import '../css/grid.css';
 import '../css/home.css';
 
@@ -67,6 +68,7 @@ export default function Home() {
                         )
                     })}
             </div>
+            <Footer />
         </div>
     )
 }
