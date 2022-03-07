@@ -137,6 +137,7 @@ export default function Scoreboard() {
                 if(rows[i].playerName === firstPlace) {
                     rows[i].winnings = Number(rows[i].winnings) + Number((firstPlacePercentage / 100) * totalPot)
                     await rows[i].save()
+                    console.log('1st place winnings sent')
                 }
             }
         }
@@ -145,6 +146,7 @@ export default function Scoreboard() {
                 if(rows[i].playerName === secondPlace) {
                     rows[i].winnings = Number(rows[i].winnings) + Number((secondPlacePercentage / 100) * totalPot)
                     await rows[i].save()
+                    console.log('2nd place winnings sent')
                 }
             }
         }
@@ -153,6 +155,7 @@ export default function Scoreboard() {
                 if(rows[i].playerName === thirdPlace) {
                     rows[i].winnings = Number(rows[i].winnings) + Number((thirdPlacePercentage/ 100) * totalPot)
                     await rows[i].save()
+                    console.log('3rd place winnings sent')
                 }
             }
         }
@@ -161,6 +164,7 @@ export default function Scoreboard() {
                 if(rows[i].playerName === highHand) {
                     rows[i].winnings = Number(rows[i].winnings) + Number((highHandPercentage / 100) * totalPot)
                     await rows[i].save()
+                    console.log('High Hand winnings sent')
                 }
             }
         }
