@@ -4,7 +4,7 @@ import PlayerCard from '../components/NewTournamentPlayerCard';
 import ConfirmModal from '../components/Modal';
 import Footer from '../components/Footer';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
-import { Button, Input, Table, Dropdown } from 'semantic-ui-react';
+import { Button, Input, Form, Dropdown } from 'semantic-ui-react';
 import { GiOpenTreasureChest } from 'react-icons/gi';
 import { FaMinus, FaCoins } from 'react-icons/fa';
 import {IconContext} from 'react-icons';
@@ -218,11 +218,11 @@ export default function Scoreboard() {
             <div className="container">
                 <section className="tournamentForms">
                     <section className="newTournamentForm">
-                        <span>Create New Tournament: </span>
-                        <Input className="input" placeholder="MonthYear" onChange={(e) => setNewTournamentName(e.target.value)} />
-                        <Button primary onClick={() => createNewSheet(newTournamentName)}>Create New Tourament</Button>
                         <span>Choose Existing Tournament: </span>
                         <Dropdown className="input" search selection value={tournamentName} placeholder="Select Tournament" options={sheetNames} onChange={(e, {value}) => setTournamentName(value)} />
+                        <span>Create New Tournament: </span>
+                        <Input style={{marginBottom: '10px'}} className="input" placeholder="MonthYear" onChange={(e) => setNewTournamentName(e.target.value)} />
+                        <Button primary onClick={() => createNewSheet(newTournamentName)}>Create New Tourament</Button>
                     </section>
                 </section>
             </div>
@@ -232,11 +232,19 @@ export default function Scoreboard() {
                 <div className="container">
                     <section className="tournamentForms">
                         <section className="newTournamentForm">
-                            <span>Create New Tournament: </span>
-                            <Input className="input" placeholder="MonthYear" onChange={(e) => setNewTournamentName(e.target.value)} />
-                            <Button primary onClick={() => createNewSheet(newTournamentName)}>Create New Tourament</Button>
-                            <span>Choose Existing Tournament: </span>
-                            <Dropdown className="input" search selection value={tournamentName} placeholder="Select Tournament" options={sheetNames} onChange={(e, {value}) => setTournamentName(value)} />
+                            <h2>Select Tournament</h2>
+                            {/* Inline styling used to override semantic ui styles */}
+                            <Form>
+                                <Form.Field style={{margin: 0}}>
+                                    <label style={{fontSize: '20px', color: 'white', fontWeight: 400}}>Choose Existing Tournament </label>
+                                    <Dropdown style={{fontSize: '20px', height: '54px'}} className="input" search selection value={tournamentName} placeholder="Select Tournament" options={sheetNames} onChange={(e, {value}) => setTournamentName(value)} />
+                                </Form.Field>
+                                <Form.Field>
+                                    <label style={{fontSize: '20px', color: 'white', fontWeight: 400}}>Create New Tournament </label>
+                                    <Input className="input" placeholder="MonthYear" onChange={(e) => setNewTournamentName(e.target.value)} />
+                                </Form.Field>
+                                <Button type="submit" primary onClick={() => createNewSheet(newTournamentName)}>Create New Tourament</Button>
+                            </Form>
                         </section>
                         <section className="addPlayerForm">
                             <h2>Add Players</h2>
