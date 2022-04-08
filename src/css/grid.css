@@ -2,9 +2,9 @@
   display: grid;
   grid-template-columns: 1fr;
   row-gap: 2px;
-  background-color: #e0e0e0;
-  border-top: 2px solid #e0e0e0;
-  border-bottom: 2px solid #e0e0e0;
+  background-color: darkslategrey;
+  border-top: 2px solid darkslategrey;
+  border-bottom: 2px solid darkslategrey;
 }
 
 .homeGrid,
@@ -14,7 +14,7 @@
   grid-template-rows: auto;
   font-size: 2rem;
   align-items: center;
-  background-color: #424651;
+  background-color: #0f1519;
 }
 
 .homeGrid > div,

@@ -7,9 +7,11 @@ export default function PlayerCard({playerName, totalBuyIns, winnings}) {
     const calculatePlusMinus = () => {
         setPlusMinus(winnings - totalBuyIns);
         if(plusMinus > 0) {
+            //green
             setPlusMinusColor('#35FF69')
         } else if (plusMinus < 0) {
-            setPlusMinusColor('#3D0814')
+            //red
+            setPlusMinusColor('#ff4557')
         }
     }
 
