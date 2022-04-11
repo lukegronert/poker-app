@@ -4,9 +4,13 @@ import { GoogleSpreadsheet } from 'google-spreadsheet';
 import Footer from '../components/Footer';
 import '../css/grid.css';
 import '../css/home.css';
+import { netlifyIdentity } from 'netlify-identity-widget';
+
+let user;
 
 function openNetlifyModal() {
   const netlifyIdentity = window.netlifyIdentity;
+  netlifyIdentity.on('close', () => user = netlifyIdentity.currentUser())
 
   if(netlifyIdentity) {
     netlifyIdentity.open();
@@ -30,6 +34,7 @@ const doc = new GoogleSpreadsheet(REACT_APP_SHEET_ID);
       });
 }())
 
+
 export default function Home() {
   const [playerRows, setPlayerRows] = useState([]);
 
@@ -41,6 +46,16 @@ export default function Home() {
               })
   }
 
+  const checkAdmin = () => {
+    if (window.netlifyIdentity.currentUser() === null) {
+      console.log('NO USER LOGGED IN')
+    } else if (user.app_metadata.roles.includes('admin')) {
+      console.log('ADMIN ALERT')
+    } else {
+      console.log('THEY AINT NO ADMIN')
+    }
+  }
+
   useEffect(() => {
     loadSheet()
   }, [])
@@ -48,7 +63,9 @@ export default function Home() {
     return (
         <div className="container">
             <h1>Fremont Poker Room</h1>
-            {/* <button onClick={() => openNetlifyModal()}>Login/Sign Up</button> */}
+            <button onClick={() => openNetlifyModal()}>Login/Sign Up</button>
+            <button onClick={() => console.log(window.netlifyIdentity.currentUser())}>User info</button>
+            <button onClick={() => checkAdmin()}>Check admin</button>
             <div className='grid-container'>
               <div className="homeGrid">
                 <div className="gridHeader">Name</div>
