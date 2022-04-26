@@ -1,5 +1,6 @@
 import Footer from '../components/Footer';
 import '../css/home.css';
+import netlifyIdentity from 'netlify-identity-widget';
 
 export default function Home() {
   return (
@@ -9,7 +10,8 @@ export default function Home() {
             Fremont Poker Room
         </h1>
       </section>
-
+      <button onClick={() => netlifyIdentity.open()}>LOGIN</button>
+      <button onClick={() => console.log(netlifyIdentity.currentUser().app_metadata.roles)}>USER</button>
       <Footer />
     </div>
   )

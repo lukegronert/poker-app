@@ -10,6 +10,7 @@ import { FaMinus, FaCoins } from 'react-icons/fa';
 import {IconContext} from 'react-icons';
 
 import '../css/scoreboard.css';
+import { netlifyIdentity } from 'netlify-identity-widget';
 
 const {REACT_APP_SHEET_ID} = process.env;
 const {REACT_APP_GOOGLE_CLIENT_EMAIL} = process.env;
@@ -27,7 +28,7 @@ const doc = new GoogleSpreadsheet(REACT_APP_SHEET_ID);
 }())
 
 
-export default function Scoreboard() {
+export default function Scoreboard({isAdmin}) {
     const [newTournamentName, setNewTournamentName] = useState('');
     const [tournamentName, setTournamentName] = useState('');
     const [currentRows, setCurrentRows] = useState([]);
@@ -212,113 +213,120 @@ export default function Scoreboard() {
             getRows()
         }
     }, [tournamentName])
-
-    if (!tournamentName) {
-        return (
-            <div className="container">
-                <section className="tournamentForms">
-                    <section className="newTournamentForm">
-                        <span>Choose Existing Tournament: </span>
-                        <Dropdown className="input" search selection value={tournamentName} placeholder="Select Tournament" options={sheetNames} onChange={(e, {value}) => setTournamentName(value)} />
-                        <span>Create New Tournament: </span>
-                        <Input style={{marginBottom: '10px'}} className="input" placeholder="MonthYear" onChange={(e) => setNewTournamentName(e.target.value)} />
-                        <Button primary onClick={() => createNewSheet(newTournamentName)}>Create New Tourament</Button>
-                    </section>
-                </section>
-            </div>
-        )
-     } else {
+    if(isAdmin) {
+        if (!tournamentName) {
             return (
                 <div className="container">
                     <section className="tournamentForms">
                         <section className="newTournamentForm">
-                            <h2>Select Tournament</h2>
-                            {/* Inline styling used to override semantic ui styles */}
-                            <Form>
-                                <Form.Field style={{margin: 0}}>
-                                    <label style={{fontSize: '20px', color: 'white', fontWeight: 400}}>Choose Existing Tournament </label>
-                                    <Dropdown style={{fontSize: '20px', height: '54px'}} className="input" search selection value={tournamentName} placeholder="Select Tournament" options={sheetNames} onChange={(e, {value}) => setTournamentName(value)} />
-                                </Form.Field>
-                                <Form.Field>
-                                    <label style={{fontSize: '20px', color: 'white', fontWeight: 400}}>Create New Tournament </label>
-                                    <Input className="input" placeholder="MonthYear" onChange={(e) => setNewTournamentName(e.target.value)} />
-                                </Form.Field>
-                                <Button type="submit" primary onClick={() => createNewSheet(newTournamentName)}>Create New Tourament</Button>
-                            </Form>
-                        </section>
-                        <section className="addPlayerForm">
-                            <h2>Add Players</h2>
-                            <EntryForm addRow={addRow} />
+                            <span>Choose Existing Tournament: </span>
+                            <Dropdown className="input" search selection value={tournamentName} placeholder="Select Tournament" options={sheetNames} onChange={(e, {value}) => setTournamentName(value)} />
+                            <span>Create New Tournament: </span>
+                            <Input style={{marginBottom: '10px'}} className="input" placeholder="MonthYear" onChange={(e) => setNewTournamentName(e.target.value)} />
+                            <Button primary onClick={() => createNewSheet(newTournamentName)}>Create New Tourament</Button>
                         </section>
                     </section>
-                    <h2>{tournamentName}</h2>
-                    <div className="grid-container">
-                        <div className="scoreboardGrid">
-                            <div className="gridHeader">Name</div>
-                            <div className="gridHeader">
-                                <IconContext.Provider value={{ color: "red" }}>
-                                    <FaMinus />
-                                </IconContext.Provider>
-                            </div>
-                            <div className="gridHeader">
-                            <IconContext.Provider value={{ color: "gold" }}>
-                                    <FaCoins />
-                                </IconContext.Provider>
-                            </div>
-                            <div></div>
-                    </div>
-                            {currentRows && currentRows.map((row) => {
-                                return (
-                                    <PlayerCard playerName={row.playerName} totalBuyIns={row.buyIn} winnings={row.winnings}
-                                                addRebuy={addRebuy} removePlayer={removePlayer}
-                                                key={currentRows.indexOf(row)} />
-                                )
-                            })}
-                    </div>
-                    <section className="totalPotSection">
-                            <IconContext.Provider value={{ color: "gold", size: '300px' }}>
-                                <div>
-                                        <GiOpenTreasureChest />
+                </div>
+            )
+         } else {
+                return (
+                    <div className="container">
+                        <section className="tournamentForms">
+                            <section className="newTournamentForm">
+                                <h2>Select Tournament</h2>
+                                {/* Inline styling used to override semantic ui styles */}
+                                <Form>
+                                    <Form.Field style={{margin: 0}}>
+                                        <label style={{fontSize: '20px', color: 'white', fontWeight: 400}}>Choose Existing Tournament </label>
+                                        <Dropdown style={{fontSize: '20px', height: '54px'}} className="input" search selection value={tournamentName} placeholder="Select Tournament" options={sheetNames} onChange={(e, {value}) => setTournamentName(value)} />
+                                    </Form.Field>
+                                    <Form.Field>
+                                        <label style={{fontSize: '20px', color: 'white', fontWeight: 400}}>Create New Tournament </label>
+                                        <Input className="input" placeholder="MonthYear" onChange={(e) => setNewTournamentName(e.target.value)} />
+                                    </Form.Field>
+                                    <Button type="submit" primary onClick={() => createNewSheet(newTournamentName)}>Create New Tourament</Button>
+                                </Form>
+                            </section>
+                            <section className="addPlayerForm">
+                                <h2>Add Players</h2>
+                                <EntryForm addRow={addRow} />
+                            </section>
+                        </section>
+                        <h2>{tournamentName}</h2>
+                        <div className="grid-container">
+                            <div className="scoreboardGrid">
+                                <div className="gridHeader">Name</div>
+                                <div className="gridHeader">
+                                    <IconContext.Provider value={{ color: "red" }}>
+                                        <FaMinus />
+                                    </IconContext.Provider>
                                 </div>
-                                <p className="totalPotText">${totalPot}</p>
-                            </IconContext.Provider>
-                    </section>
-                    <section>
-                        <h2>Declare Winners</h2>
-                        <div className="percentageForm">
-                            <label>First Place Percentage:</label>
-                            <Input className="input" placeholder="Ex: 50" onChange={(e) => setFirstPlacePercentage(e.target.value)} />
-                            <Dropdown className="input" search selection value={firstPlace} placeholder="Select Player" options={tournamentPlayers} onChange={(e, {value}) => setFirstPlace(value)} />
+                                <div className="gridHeader">
+                                <IconContext.Provider value={{ color: "gold" }}>
+                                        <FaCoins />
+                                    </IconContext.Provider>
+                                </div>
+                                <div></div>
                         </div>
-                        <div className="percentageForm">
-                            <label>Second Place Percentage:</label>
-                            <Input className="input" placeholder="Ex: 30" onChange={(e) => setSecondPlacePercentage(e.target.value)} />
-                            <Dropdown className="input" search selection value={secondPlace} placeholder="Select Player" options={tournamentPlayers} onChange={(e, {value}) => setSecondPlace(value)} />
+                                {currentRows && currentRows.map((row) => {
+                                    return (
+                                        <PlayerCard playerName={row.playerName} totalBuyIns={row.buyIn} winnings={row.winnings}
+                                                    addRebuy={addRebuy} removePlayer={removePlayer}
+                                                    key={currentRows.indexOf(row)} />
+                                    )
+                                })}
                         </div>
-                        <div className="percentageForm">
-                            <label>Third Place Percentage:</label>
-                            <Input className="input" placeholder="Ex: 15" onChange={(e) => setThirdPlacePercentage(e.target.value)} />
-                            <Dropdown className="input" search selection value={thirdPlace} placeholder="Select Player" options={tournamentPlayers} onChange={(e, {value}) => setThirdPlace(value)} />
-                        </div>
-                        <div className="percentageForm">
-                            <label>High Hand Percentage:</label>
-                            <Input className="input" placeholder="Ex: 5" onChange={(e) => setHighHandPercentage(e.target.value)} />
-                            <Dropdown className="input" search selection value={highHand} placeholder="Select Player" options={tournamentPlayers} onChange={(e, {value}) => setHighHand(value)} />
-                        </div>
-                        <div className="finalSubmitButtons">
-                            <ConfirmModal title="Confirm Winnings" buttonText="Send Winnings" clickFunction={submitWinnings} icon="table"
-                                          content={`1st: ${firstPlace} $${firstPlacePercentage/100 * totalPot}\n
-                                                    2nd: ${secondPlace} $${secondPlacePercentage/100 * totalPot}\n
-                                                    3rd: ${thirdPlace} $${thirdPlacePercentage/100 * totalPot}\n
-                                                    High Hand: ${highHand} $${highHandPercentage/100 * totalPot}\n
-                                                    Total Pot: $${totalPot}\n
-                                                    Total Winnings to Send: $${(firstPlacePercentage/100 * totalPot) + (secondPlacePercentage/100 * totalPot) 
-                                                    + (thirdPlacePercentage/100 * totalPot) + (highHandPercentage/100 * totalPot)}`} />
-                            <ConfirmModal title="Send Results to Overall" buttonText="Send to Overall Scoreboard" clickFunction={sendResultsToOverall}
-                                          content="Are you sure you want to send the results to the overall scoreboard?" icon="dolly" />
-                        </div>
-                    </section>
-                    <Footer />
+                        <section className="totalPotSection">
+                                <IconContext.Provider value={{ color: "gold", size: '300px' }}>
+                                    <div>
+                                            <GiOpenTreasureChest />
+                                    </div>
+                                    <p className="totalPotText">${totalPot}</p>
+                                </IconContext.Provider>
+                        </section>
+                        <section>
+                            <h2>Declare Winners</h2>
+                            <div className="percentageForm">
+                                <label>First Place Percentage:</label>
+                                <Input className="input" placeholder="Ex: 50" onChange={(e) => setFirstPlacePercentage(e.target.value)} />
+                                <Dropdown className="input" search selection value={firstPlace} placeholder="Select Player" options={tournamentPlayers} onChange={(e, {value}) => setFirstPlace(value)} />
+                            </div>
+                            <div className="percentageForm">
+                                <label>Second Place Percentage:</label>
+                                <Input className="input" placeholder="Ex: 30" onChange={(e) => setSecondPlacePercentage(e.target.value)} />
+                                <Dropdown className="input" search selection value={secondPlace} placeholder="Select Player" options={tournamentPlayers} onChange={(e, {value}) => setSecondPlace(value)} />
+                            </div>
+                            <div className="percentageForm">
+                                <label>Third Place Percentage:</label>
+                                <Input className="input" placeholder="Ex: 15" onChange={(e) => setThirdPlacePercentage(e.target.value)} />
+                                <Dropdown className="input" search selection value={thirdPlace} placeholder="Select Player" options={tournamentPlayers} onChange={(e, {value}) => setThirdPlace(value)} />
+                            </div>
+                            <div className="percentageForm">
+                                <label>High Hand Percentage:</label>
+                                <Input className="input" placeholder="Ex: 5" onChange={(e) => setHighHandPercentage(e.target.value)} />
+                                <Dropdown className="input" search selection value={highHand} placeholder="Select Player" options={tournamentPlayers} onChange={(e, {value}) => setHighHand(value)} />
+                            </div>
+                            <div className="finalSubmitButtons">
+                                <ConfirmModal title="Confirm Winnings" buttonText="Send Winnings" clickFunction={submitWinnings} icon="table"
+                                              content={`1st: ${firstPlace} $${firstPlacePercentage/100 * totalPot}\n
+                                                        2nd: ${secondPlace} $${secondPlacePercentage/100 * totalPot}\n
+                                                        3rd: ${thirdPlace} $${thirdPlacePercentage/100 * totalPot}\n
+                                                        High Hand: ${highHand} $${highHandPercentage/100 * totalPot}\n
+                                                        Total Pot: $${totalPot}\n
+                                                        Total Winnings to Send: $${(firstPlacePercentage/100 * totalPot) + (secondPlacePercentage/100 * totalPot) 
+                                                        + (thirdPlacePercentage/100 * totalPot) + (highHandPercentage/100 * totalPot)}`} />
+                                <ConfirmModal title="Send Results to Overall" buttonText="Send to Overall Scoreboard" clickFunction={sendResultsToOverall}
+                                              content="Are you sure you want to send the results to the overall scoreboard?" icon="dolly" />
+                            </div>
+                        </section>
+                        <Footer />
+                    </div>
+                )
+            }
+        } else {
+            return (
+                <div className="container">
+                    <p>You must be an Admin to access these tools.</p>
                 </div>
             )
         }
