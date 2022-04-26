@@ -23,7 +23,8 @@ function initNetlifyIdentity() {
 // }
 
 function App() {
-  const [isAdmin, setIsAdmin] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [userName, setUserName] = useState('');
 
   netlifyIdentity.on('login', () => {
     //Check if user has a role
@@ -31,15 +32,18 @@ function App() {
       //if they do, check for admin
       if(netlifyIdentity.currentUser().app_metadata.roles.includes('admin')) {
         setIsAdmin(true)
+        setUserName(netlifyIdentity.currentUser().user_metadata.full_name)
         return (
           console.log('logged in')
-        )
-      } else {
+          )
+        } else {
+        setUserName(netlifyIdentity.currentUser().user_metadata.full_name)
         console.log('logged in')
       }
     } else {
       //user has no roles, so not an admin
       setIsAdmin(false)
+      setUserName(netlifyIdentity.currentUser().user_metadata.full_name)
       return (
         console.log('logged in')
       )
@@ -60,7 +64,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route exact path="/" element={<Home isAdmin={isAdmin} />} />
-          <Route exact path="/leaderboard" element={<Leaderboard isAdmin={isAdmin} />} />
+          <Route exact path="/leaderboard" element={<Leaderboard isAdmin={isAdmin} userName={userName} />} />
           <Route path="/scoreboard" element={<Scoreboard isAdmin={isAdmin} />} />
         </Routes>
       </Router>

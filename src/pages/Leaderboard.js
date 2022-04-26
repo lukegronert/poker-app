@@ -31,7 +31,7 @@ const doc = new GoogleSpreadsheet(REACT_APP_SHEET_ID);
       });
 }())
 
-export default function Leaderboard() {
+export default function Leaderboard({userName}) {
   const [playerRows, setPlayerRows] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
 
@@ -73,10 +73,17 @@ export default function Leaderboard() {
                       return ((b.winnings - b.buyIn) - (a.winnings - a.buyIn))
                       {/* Map the array */}
                     }).map((row) => {
+                      if(userName === row.playerName) {
+                        return (
+                          <PlayerCard playerName={row.playerName} totalBuyIns={row.buyIn} winnings={row.winnings}
+                                        key={playerRows.indexOf(row)} isUser={true} />
+                        )
+                      } else{
                         return (
                             <PlayerCard playerName={row.playerName} totalBuyIns={row.buyIn} winnings={row.winnings}
                                         key={playerRows.indexOf(row)} />
                         )
+                      }
                     })}
             </div>
             <Footer />

@@ -10,7 +10,6 @@ import { FaMinus, FaCoins } from 'react-icons/fa';
 import {IconContext} from 'react-icons';
 
 import '../css/scoreboard.css';
-import { netlifyIdentity } from 'netlify-identity-widget';
 
 const {REACT_APP_SHEET_ID} = process.env;
 const {REACT_APP_GOOGLE_CLIENT_EMAIL} = process.env;

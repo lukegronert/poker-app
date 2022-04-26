@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import logo from '../images/logo-white.svg';
+import netlifyIdentity from 'netlify-identity-widget';
 
 import '../css/navbar.css';
 
@@ -16,13 +17,16 @@ export default function Navbar() {
             </ul>
             <ul className="nav-links">
                 <li>
+                    <a className="login-a" onClick={() => netlifyIdentity.open()}>Login/Sign Up</a>
+                </li>
+                <li>
                     <Link to="/leaderboard">
                         Leaderboard
                     </Link>
                 </li>
                 <li>
                     <Link to="/scoreboard">
-                        Create/Edit
+                        Admin
                     </Link>
                 </li>
             </ul>

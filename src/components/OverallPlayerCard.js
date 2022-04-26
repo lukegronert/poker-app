@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 
-export default function PlayerCard({playerName, totalBuyIns, winnings}) {
+export default function PlayerCard({playerName, totalBuyIns, winnings, isUser}) {
     const [plusMinus, setPlusMinus] = useState(0);
     const [plusMinusColor, setPlusMinusColor] = useState('grey')
     
@@ -18,13 +18,23 @@ export default function PlayerCard({playerName, totalBuyIns, winnings}) {
     useEffect(() => {
         calculatePlusMinus()
     });
-
-    return (
-        <div className="homeGrid">
-            <div className="playerName">{playerName}</div>
-            <div className="noMobileDisplay buyIns">{totalBuyIns}</div>
-            <div className="noMobileDisplay winnings">{winnings}</div>
-            <div className="plusMinus" style={{color: plusMinusColor}}>{plusMinus}</div>
-        </div>
-    )
+    if(isUser) {
+        return (
+            <div className="homeGrid">
+                <div className="playerName" style={{color: 'yellow'}}>{playerName}</div>
+                <div className="noMobileDisplay buyIns">{totalBuyIns}</div>
+                <div className="noMobileDisplay winnings">{winnings}</div>
+                <div className="plusMinus" style={{color: plusMinusColor}}>{plusMinus}</div>
+            </div>
+        )
+    } else {
+        return (
+            <div className="homeGrid">
+                <div className="playerName">{playerName}</div>
+                <div className="noMobileDisplay buyIns">{totalBuyIns}</div>
+                <div className="noMobileDisplay winnings">{winnings}</div>
+                <div className="plusMinus" style={{color: plusMinusColor}}>{plusMinus}</div>
+            </div>
+        )
+    }
 }
