@@ -17,16 +17,11 @@ function initNetlifyIdentity() {
   document.body.appendChild(script);
 }
 
-
-// const getUserInfo = () => {
-//   console.log()
-// }
-
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [userName, setUserName] = useState('');
 
-  netlifyIdentity.on('login', () => {
+  const checkAdmin = () => {
     //Check if user has a role
     if(netlifyIdentity.currentUser().app_metadata.roles !== undefined) {
       //if they do, check for admin
@@ -48,6 +43,10 @@ function App() {
         console.log('logged in')
       )
     }
+  }
+
+  netlifyIdentity.on('login', () => {
+    checkAdmin()
   });
 
   netlifyIdentity.on('logout', () => {
@@ -56,6 +55,9 @@ function App() {
 
   useEffect(() => {
     initNetlifyIdentity();
+    if(netlifyIdentity.currentUser()) {
+      checkAdmin()
+    }
   })
   
   return (
