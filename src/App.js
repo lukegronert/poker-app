@@ -6,9 +6,6 @@ import Leaderboard from './pages/Leaderboard'
 import Navbar from './components/Navbar';
 import './css/base.css';
 
-// Import Netlify Identity script into HTML of site
-// Must be called from React life-cycle function
-// Will not work if called at build-time
 function initNetlifyIdentity() {
   console.log('netlify identity called')
   const script = document.createElement('script');

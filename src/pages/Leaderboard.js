@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PlayerCard from '../components/OverallPlayerCard';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
+import {Oval} from 'react-loader-spinner';
 import Footer from '../components/Footer';
 import '../css/grid.css';
 import '../css/leaderboard.css';
@@ -32,19 +33,30 @@ const doc = new GoogleSpreadsheet(REACT_APP_SHEET_ID);
 
 export default function Leaderboard() {
   const [playerRows, setPlayerRows] = useState([]);
+  const [isLoading, setIsLoading] = useState(true)
 
   const loadSheet = async (getRows) => {
+    setIsLoading(true);
     await doc.loadInfo()
               .then(async () => {
                 const rows = await doc.sheetsByIndex[0].getRows()
                 setPlayerRows(rows)
+                setIsLoading(false)
               })
   }
 
   useEffect(() => {
     loadSheet()
   }, [])
-
+  if(isLoading) {
+    return (
+      <div className="container">
+        <div className="loader">
+          <Oval color="#FFFFFF" height={50} width={50} />
+        </div>
+      </div>
+    )
+  } else {
     return (
         <div className="container">
             <h1>Fremont Poker Room</h1>
@@ -70,4 +82,5 @@ export default function Leaderboard() {
             <Footer />
         </div>
     )
+  }
 }

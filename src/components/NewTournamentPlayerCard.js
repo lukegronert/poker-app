@@ -1,6 +1,5 @@
 import React from 'react';
 import ConfirmModal from './Modal';
-import { Button } from 'semantic-ui-react';
 import { FaTrashAlt } from 'react-icons/fa';
 
 export default function PlayerCard({playerName, totalBuyIns, addRebuy, removePlayer, winnings}) {
