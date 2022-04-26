@@ -1,7 +1,27 @@
 ul {
   padding: 0;
-  display: flex;
-  justify-content: end;
+  display: inline-flex;
+  width: 50%;
+  align-items: center;
+}
+
+.nav-links {
+  padding: 0;
+  display: inline-flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 50%;
+  height: 50px;
+  float: right;
+}
+
+.nav-links li {
+  padding-left: 10px;
+  color: white;
+}
+
+a {
+  color: white;
 }
 
 li {
