@@ -17,7 +17,7 @@ export default function Navbar() {
             </ul>
             <ul className="nav-links">
                 <li>
-                    <a className="login-a" onClick={() => netlifyIdentity.open()}>Login/Sign Up</a>
+                    <a className="login-a" onClick={() => netlifyIdentity.open()}>Login</a>
                 </li>
                 <li>
                     <Link to="/leaderboard">
